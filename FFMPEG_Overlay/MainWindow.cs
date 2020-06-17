@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace FFMPEG_Overlay
 {
-    public class Helper
+    public class VideoContainer
     {
-        public static Form1 form;
+        public static MainWindow window;
         public int totalSeconds;
         public int currentSeconds;
         public void OutputHandler(object sender, DataReceivedEventArgs args)
@@ -46,9 +46,9 @@ namespace FFMPEG_Overlay
 
             }
 
-            form.Invoke(new Action(() =>
+            window.Invoke(new Action(() =>
             {
-                form.UpdateProgressBar();
+                window.UpdateProgressBar();
             }));
 
 
@@ -67,10 +67,10 @@ namespace FFMPEG_Overlay
                 int seconds = int.Parse(values[2]);
                 totalSeconds = seconds + minutes * 60 + hours * 3600;
 
-                form.Invoke(new Action(() =>
+                window.Invoke(new Action(() =>
                 {
-                    form.UpdateProgressBar();
-                     form.Log("Got totalSeconds from ffprobe");
+                    window.UpdateProgressBar();
+                     window.Log("Got totalSeconds from ffprobe");
                 }
 ));
             }
@@ -98,10 +98,10 @@ namespace FFMPEG_Overlay
                 int seconds = int.Parse(time[2]);
 
                 currentSeconds = seconds + minutes * 60 + hours * 3600;
-                form.Invoke(new Action(() =>
+                window.Invoke(new Action(() =>
                 {
-                    form.UpdateProgressBar();
-                    form.Log("Got current from ffmpeg");
+                    window.UpdateProgressBar();
+                    window.Log("Got current from ffmpeg");
                 }
 ));
 
@@ -112,14 +112,16 @@ namespace FFMPEG_Overlay
 
         }
     }
-    public partial class Form1 : Form
+
+
+    public partial class MainWindow : Form
     {
         public enum Codec { H264, H265, VP9 };
         public enum Preset { ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow };
 
-        List<Helper> helpers = new List<Helper>();
+        List<VideoContainer> videos = new List<VideoContainer>();
 
-        bool saveFileSet = false;
+        bool saveFolderSet = false;
         bool concat = false;
         float bitRate = 0;
 
@@ -129,12 +131,19 @@ namespace FFMPEG_Overlay
         string outputPath = String.Empty;
         List<string> inputPaths = new List<string>();
 
+        string tempFolder;
         string fileListPath;
+        string workingFolder;
 
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
 
+            Start();
+ 
+        }
+        void Start()
+        {
             comboBoxCodec.DataSource = Enum.GetValues(typeof(Codec));
             comboBoxPreset.DataSource = Enum.GetValues(typeof(Preset));
 
@@ -144,7 +153,7 @@ namespace FFMPEG_Overlay
 
             System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
 
-            Helper.form = this;
+            VideoContainer.window = this;
 
             progressBar.Minimum = 0;
             progressBar.Maximum = 1000;
@@ -152,17 +161,17 @@ namespace FFMPEG_Overlay
             bitRate = (float)numericBitrate.Value / 1024;
             label4.Text = $"{bitRate} Mb/s";
 
-            CheckFolders();
-        }
-        void CheckFolders()
-        {
-            string tempPath = AppDomain.CurrentDomain.BaseDirectory + @"\temp";
-            if (!Directory.Exists(tempPath))
-                Directory.CreateDirectory(tempPath);
+            workingFolder = AppDomain.CurrentDomain.BaseDirectory;
+            tempFolder = workingFolder + @"\temp";
+            //string tempPath = workingFolder + @"\temp";
+            if (!Directory.Exists(tempFolder))
+                Directory.CreateDirectory(tempFolder);
 
-            fileListPath = tempPath + @"\files.txt";
-            File.WriteAllText(fileListPath,"");
+            fileListPath = tempFolder + @"\files.txt";
+            File.WriteAllText(fileListPath, "");
+
         }
+
 
         private void ButtonSelect_Click(object sender, EventArgs e)
         {
@@ -187,22 +196,12 @@ namespace FFMPEG_Overlay
         {
             FolderBrowserDialog saveFile = new FolderBrowserDialog();
 
-            //saveFile.Filter = "mkv |*mkv*";
-
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 outputPath = saveFile.SelectedPath;
-               // List<string> parts = saveFile.FileName.Split(new char[] {'\\'}).ToList();
-                //parts.RemoveAt(parts.Count - 1);
-
-               // string res = string.Join("\\", parts);
-
                 labelPath.Text = outputPath;
-
-                saveFileSet = true;
+                saveFolderSet = true;
             }
-
-
         }
         private void CheckBoxConcat_CheckedChanged(object sender, EventArgs e)
         {
@@ -213,10 +212,8 @@ namespace FFMPEG_Overlay
         }
         private void LabelPath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if(saveFileSet)
-            {
+            if(saveFolderSet)
                 Process.Start(labelPath.Text);
-            }
         }
         private void NumericBitrate_ValueChanged(object sender, EventArgs e)
         {
@@ -225,55 +222,26 @@ namespace FFMPEG_Overlay
         }
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            if(inputPaths.Count < 1 || !saveFileSet)
+            if(inputPaths.Count < 1 || !saveFolderSet)
             {
-                MessageBox.Show($"Not all parameters are set\ninputs:{inputPaths.Count}\nselectedFolder:{saveFileSet}", "ERROR!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Not all parameters are set\ninputs:{inputPaths.Count}\nselectedFolder:{saveFolderSet}", "ERROR!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             Lock(true);
 
-            helpers = new List<Helper>();
+            videos = new List<VideoContainer>();
 
             if (concat)
             {
                 //Get video durations:
-                //./ffprobe -i output2.mkv -show_format 
                 for (int i = 0; i < inputPaths.Count; i++)
                 {
-                    Helper a = new Helper();
-                    helpers.Add(a);
+                    VideoContainer a = new VideoContainer();
+                    videos.Add(a);
 
-                    Process check = new Process();
-                    //process.StartInfo.FileName = res + @"\ffmpeg.exe";
-                    check.StartInfo.FileName = @"F:\Сервис\Настройка\Работа с видео\ffmpeg\bin\ffprobe.exe";
-
-                    string command2 = $"\"{inputPaths[i]}\"";
-
-                    check.StartInfo.Arguments = $"{command2}";
-                    check.StartInfo.UseShellExecute = false;
-                    check.StartInfo.RedirectStandardOutput = true;
-                    check.StartInfo.RedirectStandardError = true;
-                    check.StartInfo.CreateNoWindow = true;
-                    // process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    //* Set your output and error (asynchronous) handlers
-                    check.StartInfo.RedirectStandardInput = true;
-                    check.OutputDataReceived += new DataReceivedEventHandler(a.FFProbeOutputHandler);
-                    check.ErrorDataReceived += new DataReceivedEventHandler(a.FFProbeOutputHandler);
-                    //* Start process and handlers
-                    check.Start();
-                    check.BeginOutputReadLine();
-                    check.BeginErrorReadLine();
-
-                    
+                    Start_ffprobe(inputPaths[i], new DataReceivedEventHandler(a.FFProbeOutputHandler));
                 }
-
-
-
-
-
-
-
 
                 //IT DOESNT WORK FROM THAT POINT FOR SOME FUCKING REASON
 
@@ -302,16 +270,13 @@ namespace FFMPEG_Overlay
                 }
 
                 string command = $"-safe 0 -f concat -i {fileListPath} -c copy \"{outputPath}\\{resName}_merged.mkv\"";
-                List<string> parts = Application.ExecutablePath.Split(new char[] { '\\' }).ToList();
-                parts.RemoveAt(parts.Count - 1);
-                string res = string.Join("\\", parts);
 
                // Helper a = new Helper();
                // helpers.Add(a);
 
                 Process converter = new Process();
-                //process.StartInfo.FileName = res + @"\ffmpeg.exe";
-                converter.StartInfo.FileName = @"F:\Сервис\Настройка\Работа с видео\ffmpeg\bin\ffmpeg.exe";
+                converter.StartInfo.FileName = workingFolder + @"\ffmpeg.exe";
+               // converter.StartInfo.FileName = @"F:\Сервис\Настройка\Работа с видео\ffmpeg\bin\ffmpeg.exe";
 
                 converter.StartInfo.Arguments = $"{command}";
                 converter.StartInfo.UseShellExecute = false;
@@ -321,8 +286,8 @@ namespace FFMPEG_Overlay
                 // process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 //* Set your output and error (asynchronous) handlers
                 converter.StartInfo.RedirectStandardInput = true;
-                converter.OutputDataReceived += new DataReceivedEventHandler(helpers[0].OutputHandlerConcat);
-                converter.ErrorDataReceived += new DataReceivedEventHandler(helpers[0].OutputHandlerConcat);
+                converter.OutputDataReceived += new DataReceivedEventHandler(videos[0].OutputHandlerConcat);
+                converter.ErrorDataReceived += new DataReceivedEventHandler(videos[0].OutputHandlerConcat);
                 //* Start process and handlers
                 converter.Start();
                 converter.BeginOutputReadLine();
@@ -339,8 +304,8 @@ namespace FFMPEG_Overlay
                 {
                     for (int i = 0; i < inputPaths.Count; i++)
                     {
-                        Helper a = new Helper();
-                        helpers.Add(a);
+                        VideoContainer a = new VideoContainer();
+                        videos.Add(a);
 
                         string[] splitName = inputPaths[i].Split('\\');
                         string originalName = splitName[splitName.Length - 1];
@@ -350,15 +315,9 @@ namespace FFMPEG_Overlay
                         string command = $"-i \"{inputPaths[i]}\" -vcodec {codec} -preset {preset} -b:v {bitRate}M \"{outputPath}\\{originalName}_compressed.mkv\"";
 
 
-                        List<string> parts = Application.ExecutablePath.Split(new char[] { '\\' }).ToList();
-                        parts.RemoveAt(parts.Count - 1);
-
-                        string res = string.Join("\\", parts);
-
-
                         Process process = new Process();
-                        //process.StartInfo.FileName = res + @"\ffmpeg.exe";
-                        process.StartInfo.FileName = @"F:\Сервис\Настройка\Работа с видео\ffmpeg\bin\ffmpeg.exe";
+                        process.StartInfo.FileName = workingFolder + @"\ffmpeg.exe";
+                        //process.StartInfo.FileName = @"F:\Сервис\Настройка\Работа с видео\ffmpeg\bin\ffmpeg.exe";
 
                         process.StartInfo.Arguments = $"{command}";
                         process.StartInfo.UseShellExecute = false;
@@ -387,16 +346,38 @@ namespace FFMPEG_Overlay
             }
         }
 
+        void Start_ffprobe(string file, DataReceivedEventHandler handler)
+        {
+            string args = $"\"{file}\"";
+
+            Process ffprobe = new Process();
+            ffprobe.StartInfo.FileName = workingFolder + @"\ffprobe.exe";
+            ffprobe.StartInfo.Arguments = args;
+            ffprobe.StartInfo.UseShellExecute = false;
+            ffprobe.StartInfo.CreateNoWindow = true;
+
+            ffprobe.StartInfo.RedirectStandardOutput = true;
+            ffprobe.StartInfo.RedirectStandardError = true;
+            ffprobe.StartInfo.RedirectStandardInput = true;
+
+            ffprobe.OutputDataReceived += new DataReceivedEventHandler(handler);
+            ffprobe.ErrorDataReceived += new DataReceivedEventHandler(handler);
+
+            ffprobe.Start();
+            ffprobe.BeginOutputReadLine();
+            ffprobe.BeginErrorReadLine();
+        }
+
         int totalVideoLength = 0;
         int currentLength = 0;
 
         public void UpdateProgressBar()
         {
             currentLength = totalVideoLength = 0;
-            for (int i = 0; i < helpers.Count; i++)
+            for (int i = 0; i < videos.Count; i++)
             {
-                totalVideoLength += helpers[i].totalSeconds;
-                currentLength += helpers[i].currentSeconds;
+                totalVideoLength += videos[i].totalSeconds;
+                currentLength += videos[i].currentSeconds;
             }
             progressBar.Maximum = totalVideoLength;
             progressBar.Minimum = 0;
@@ -413,7 +394,6 @@ namespace FFMPEG_Overlay
         }
         void Lock(bool val)
         {
-           // textBoxFiles.Enabled = !val;
             buttonSave.Enabled = !val;
             buttonSelect.Enabled = !val;
             buttonStart.Enabled = !val;
@@ -430,8 +410,7 @@ namespace FFMPEG_Overlay
         private void ComboBoxCodec_SelectedIndexChanged(object sender, EventArgs e)
         {
               Codec status;
-              Enum.TryParse<Codec>(comboBoxCodec.SelectedValue.ToString(), out status);
-            //codec = comboBoxCodec.SelectedValue.ToString();
+              Enum.TryParse(comboBoxCodec.SelectedValue.ToString(), out status);
 
             switch (status)
             {
@@ -452,7 +431,6 @@ namespace FFMPEG_Overlay
         private void ComboBoxPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
             //  Preset status;
-            // Enum.TryParse<Preset>(comboBoxPreset.SelectedValue.ToString(), out status);
             preset = comboBoxPreset.SelectedValue.ToString();
         }
 
