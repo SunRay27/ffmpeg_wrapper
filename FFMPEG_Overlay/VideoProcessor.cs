@@ -4,19 +4,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace FFMPEG_Overlay
 {
     public class VideoProcessor
     {
-        public enum Codec { H264, H265, VP9, Copy };
-        public enum Preset { ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow };
-        public enum OutExtension { MP4, MKV };
+        public enum VideoCodec { H264, H264_amd, H264_nvenc, H264_intel_qsv, H265, H265_nvenc, H265_amd, H265_intel_qsv, VP8, VP9, Copy };
+        public enum AudioCodec { Copy, Vorbis, WavPack, MP3 };
+        public enum Preset { none, ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow };
+        public enum OutExtension { mp4, mkv };
 
         //in kb/s
         float bitRate = 0;
 
-        string codec = String.Empty;
+        string videoCodec = String.Empty;
+        string audioCodec = String.Empty;
         string preset = String.Empty;
 
         string inputPath = String.Empty;
@@ -25,8 +28,14 @@ namespace FFMPEG_Overlay
         int totalTime = 0;
         int curTime = 0;
 
+        int targetWidth = -2;
+        int targetHeight = -2;
+
+        string flipAddon = string.Empty;
 
         WorkerForm worker;
+
+        string ffmpegPath;
 
         Process process;
         public Process Process { get { return process; } }
@@ -34,24 +43,63 @@ namespace FFMPEG_Overlay
         //public DataReceivedEventHandler onProcessPrint;
         public EventHandler onProcessExit;
 
-        void SetCodecToString(Codec codec)
+        void SetVideoCodecToString(VideoCodec codec)
         {
             switch (codec)
             {
-                case Codec.H264:
-                    this.codec = "libx264";
+                case VideoCodec.H264:
+                    this.videoCodec = "libx264";
                     break;
-                case Codec.H265:
-                    this.codec = "libx265";
+                case VideoCodec.H264_amd:
+                    this.videoCodec = "h264_amf";
                     break;
-                case Codec.VP9:
-                    this.codec = "libvpx-vp9";
+                case VideoCodec.H264_nvenc:
+                    this.videoCodec = "h264_nvenc";
                     break;
-                case Codec.Copy:
-                    this.codec = "copy";
+                case VideoCodec.H264_intel_qsv:
+                    this.videoCodec = "h264_qsv";
+                    break;
+                case VideoCodec.H265:
+                    this.videoCodec = "libx265";
+                    break;
+                case VideoCodec.H265_nvenc:
+                    this.videoCodec = "hevc_nvenc";
+                    break;
+                case VideoCodec.H265_amd:
+                    this.videoCodec = "hevc_amf";
+                    break;
+                case VideoCodec.H265_intel_qsv:
+                    this.videoCodec = "hevc_qsv";
+                    break;
+                case VideoCodec.VP8:
+                    this.videoCodec = "libvpx";
+                    break;
+                case VideoCodec.VP9:
+                    this.videoCodec = "libvpx-vp9";
+                    break;
+                case VideoCodec.Copy:
+                    this.videoCodec = "copy";
+                    break;
+            }
+
+        }
+        void SetAudioCodecToString(AudioCodec codec)
+        {
+            switch (codec)
+            {
+                case AudioCodec.Copy:
+                    audioCodec = "copy";
+                    break;
+                case AudioCodec.MP3:
+                    audioCodec = "libmp3lame";
+                    break;
+                case AudioCodec.Vorbis:
+                    audioCodec = "libvorbis";
+                    break;
+                case AudioCodec.WavPack:
+                    audioCodec = "wavpack";
                     break;
                 default:
-                    this.codec = "libx264";
                     break;
             }
         }
@@ -59,13 +107,24 @@ namespace FFMPEG_Overlay
         {
             this.preset = preset.ToString();
         }
-        public VideoProcessor(string inputPath, string outputFolder, string outName, Codec codec, Preset preset, OutExtension ext, float bitrate)
+        public VideoProcessor(string inputPath, string outputFolder, string outName, VideoCodec codec, AudioCodec codec2, Preset preset, OutExtension ext, float bitrate, string ffmpegPath, int newWidth = -2, int newHeight = -2, bool hflip = false, bool vflip = false)
         {
             this.inputPath = inputPath;
             this.outputPath = $@"{outputFolder}\{outName}.{ext.ToString()}";
             this.bitRate = bitrate;
+            this.targetHeight = newHeight;
+            this.targetWidth = newWidth;
+            this.ffmpegPath = ffmpegPath;
 
-            SetCodecToString(codec);
+            if (hflip && vflip)
+                flipAddon = "hflip,vflip,";
+            else if (hflip)
+                flipAddon = "hflip,";
+            else
+                flipAddon = "vflip,";
+
+            SetVideoCodecToString(codec);
+            SetAudioCodecToString(codec2);
             SetPresetToString(preset);
 
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
@@ -77,13 +136,16 @@ namespace FFMPEG_Overlay
 
         public void StartProcessing()
         {
-            string command = $"-i {inputPath} -c:v {codec} -b:v {bitRate}M -preset {preset} {outputPath}";
+            string command = string.Empty;
+            if (preset == "none")
+                command = $"-i {inputPath} -c:a {audioCodec} -c:v {videoCodec} -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M {outputPath}";
+            else
+                command = $"-i {inputPath} -c:a {audioCodec} -c:v {videoCodec} -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M -preset {preset} {outputPath}";
 
             process = new Process();
-            process.StartInfo.FileName = MainWindow.ffmpegPath;
+            process.StartInfo.FileName = ffmpegPath;
 
             
-            string deb = MainWindow.ffmpegPath;
             process.EnableRaisingEvents = true;
 
 
@@ -114,6 +176,14 @@ namespace FFMPEG_Overlay
             worker = new WorkerForm(this);
             worker.Show();
             worker.SetName(outputPath);
+
+            string helloString = "//*************************************************************************************************************//" + Environment.NewLine +
+                                 "//*****WELOCOME TO MY SUPER DUPER FFMPEG WRAPPER REENCODING PROCESS!!!!!!!!!!!!!****//" + Environment.NewLine +
+                                 "//*************************************************************************************************************//" + Environment.NewLine +
+                                 
+                                 $"{command}" + Environment.NewLine+ Environment.NewLine ;
+
+            worker.WriteLine(helloString);
 
             //* Start process and handlers
             process.Start();

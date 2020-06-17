@@ -19,44 +19,88 @@ namespace FFMPEG_Overlay
     public partial class MainWindow : Form
     {
 
-        //public TextBox ConsoleTextBox { get { return consoleText; } }
-       // public Label FrameText { get { return frameText; } }
-       // public ProgressBar ProgressBar { get { return progressBar; } }
-        //public enum Codec { H264, H265, VP9 };
-        // public enum Preset { ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow };
+        [Serializable]
+        public class GlobalSettings
+        {
+            
+            public string saveFolder = string.Empty;
+            public string ffmpegPath = string.Empty;
 
-        public static MainWindow instance;
+            public bool IsSaveFolderValid()
+            {
+                return Directory.Exists(saveFolder) && !Regex.IsMatch(saveFolder, @"\p{IsCyrillic}");
+            }
+            public bool IsFFMPEGPathValid()
+            {
+                bool result = false;
 
-        VideoProcessor.Codec selectedCodec;
+                if (ffmpegPath.Contains("ffmpeg.exe"))
+                {
+                    try
+                    {
+                    Process process = new Process();
+
+                    process.StartInfo.FileName = ffmpegPath;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.Start();
+
+                    string message = process.StandardError.ReadToEnd();
+
+                    if (message.Contains("ffmpeg version"))
+                        result = true;
+
+                    if(!process.HasExited)
+                        process.Kill();
+                    }
+                    catch
+                    { }
+                }
+
+
+                return result;
+            }
+        }
+
+        public class ConvertSettings
+        {
+
+        }
+
+        GlobalSettings globalSettings = new GlobalSettings();
+        ConvertSettings convertSettings;
+
+
+        VideoProcessor.VideoCodec selectedCodec;
+        VideoProcessor.AudioCodec selectedACodec;
         VideoProcessor.Preset selectedPreset;
+        VideoProcessor.OutExtension selectedExtension;
 
-        bool saveFolderSet = false;
         bool concat = false;
         float bitRate = 0;
 
 
-        string outputPath = String.Empty;
-        //List<string> inputPaths = new List<string>();
 
         string tempFolder;
         string fileListPath;
         string workingFolder;
 
-        public static string ffmpegPath;
 
 
 
         public MainWindow()
         {
             InitializeComponent();
-            instance = this;
             Start();
 
         }
         void Start()
         {
-            comboBoxCodec.DataSource = Enum.GetValues(typeof(VideoProcessor.Codec));
+            comboBoxCodec.DataSource = Enum.GetValues(typeof(VideoProcessor.VideoCodec));
+            comboBoxACodec.DataSource = Enum.GetValues(typeof(VideoProcessor.AudioCodec));
             comboBoxPreset.DataSource = Enum.GetValues(typeof(VideoProcessor.Preset));
+            comboExtention.DataSource = Enum.GetValues(typeof(VideoProcessor.OutExtension));
 
 
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
@@ -76,33 +120,33 @@ namespace FFMPEG_Overlay
         {
             workingFolder = AppDomain.CurrentDomain.BaseDirectory;
             tempFolder = workingFolder + @"\temp";
-            //string tempPath = workingFolder + @"\temp";
+            
             if (!Directory.Exists(tempFolder))
                 Directory.CreateDirectory(tempFolder);
 
             fileListPath = tempFolder + @"\files.txt";
             File.WriteAllText(fileListPath, "");
 
-            if (XMLSerializer.Exist("ffmpeg"))
-                ffmpegPath = XMLSerializer.Load<string>("ffmpeg");
+            if (XMLSerializer.Exist("settings"))
+                globalSettings = XMLSerializer.Load<GlobalSettings>("settings");
 
-            if (File.Exists(ffmpegPath))
+            if(globalSettings.IsFFMPEGPathValid())
             {
-                if (!ffmpegPath.Contains("ffmpeg"))
-                {
-                    labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
-                    labelffmpegpath.ForeColor = Color.Red;
-                }
-                else
-                {
-                    labelffmpegpath.Text = ffmpegPath;
-                    labelffmpegpath.ForeColor = Color.Green;
-                }
+                labelffmpegpath.Text = globalSettings.ffmpegPath;
+                labelffmpegpath.ForeColor = Color.Green;
             }
             else
             {
                 labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
                 labelffmpegpath.ForeColor = Color.Red;
+            }
+            if (globalSettings.IsSaveFolderValid())
+            {
+                labelPath.Text = globalSettings.saveFolder;
+            }
+            else
+            {
+                labelPath.Text = "No output directory set...";
             }
 
         }
@@ -122,7 +166,7 @@ namespace FFMPEG_Overlay
         //on click on out path
         private void LabelPath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (saveFolderSet)
+            if (globalSettings.IsSaveFolderValid())
                 Process.Start(labelPath.Text);
         }
 
@@ -155,13 +199,13 @@ namespace FFMPEG_Overlay
                 MessageBox.Show($"Не выбраны файлы для обработки (должна стоять галочка)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (!saveFolderSet)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
+            if (!globalSettings.IsSaveFolderValid())// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
             {
-                MessageBox.Show($"Не выбрана папка для вывода", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Не выбрана папка для вывода (или содержит кириллицу)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             //todo: make some certain method to check if we have it
-            if (ffmpegPath == null)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
+            if (!globalSettings.IsFFMPEGPathValid())// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
             {
                 MessageBox.Show($"Не указан путь к ffmpeg.exe", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -192,11 +236,11 @@ namespace FFMPEG_Overlay
                 }
 
 
-                string command = $"-safe 0 -f concat -i {fileListPath} -c copy \"{outputPath}\\{resName}_merged.mkv\"";
+                string command = $"-safe 0 -f concat -i {fileListPath} -c copy \"{globalSettings.saveFolder}\\{resName}_merged.mkv\"";
 
 
                 Process converter = new Process();
-                converter.StartInfo.FileName = ffmpegPath;
+                converter.StartInfo.FileName =globalSettings.ffmpegPath;
                 // converter.StartInfo.FileName = @"F:\Сервис\Настройка\Работа с видео\ffmpeg\bin\ffmpeg.exe";
 
                 converter.StartInfo.Arguments = $"{command}";
@@ -234,7 +278,22 @@ namespace FFMPEG_Overlay
                         string originalName = splitName[splitName.Length - 1];
                         originalName = originalName.Split('.')[0];
 
-                        VideoProcessor videoProcessor = new VideoProcessor(fileList.CheckedItems[i].ToString(), outputPath, $"{originalName}_compressed", selectedCodec, selectedPreset, VideoProcessor.OutExtension.MKV, bitRate);
+                        VideoProcessor videoProcessor = new VideoProcessor
+                            (
+                            fileList.CheckedItems[i].ToString(),
+                            globalSettings.saveFolder,
+                            $"{textPrefix.Text}{originalName}{textPostfix.Text}",
+                            selectedCodec,
+                            selectedACodec,
+                            selectedPreset,
+                            selectedExtension,
+                            bitRate,
+                            globalSettings.ffmpegPath,
+                            GetTargetWidth(),
+                            GetTargetHeight(),
+                            checkHFlip.Checked,
+                            checkVFlip.Checked
+                            );
 
                         videoProcessor.onProcessExit += Converter_Exited;
 
@@ -314,17 +373,26 @@ namespace FFMPEG_Overlay
             fileSelect.Filter = "ffmpeg.exe |*.exe;";
             if (fileSelect.ShowDialog() == DialogResult.OK)
             {
-                if (fileSelect.FileName.Contains("ffmpeg.exe"))
+                globalSettings.ffmpegPath = fileSelect.FileName;
+                if(globalSettings.IsFFMPEGPathValid())
                 {
                     labelffmpegpath.Text = fileSelect.FileName;
                     labelffmpegpath.ForeColor = Color.Green;
-                    ffmpegPath = fileSelect.FileName;
-                    XMLSerializer.Save("ffmpeg", ffmpegPath);
+
+                    XMLSerializer.Save("settings", globalSettings);
                 }
                 else
                 {
                     labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
                     labelffmpegpath.ForeColor = Color.Red;
+                    globalSettings.ffmpegPath = string.Empty;
+
+
+                    var Result = MessageBox.Show($"Файл не прошёл проверку: может это не ffmpeg?", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    if (Result == DialogResult.Retry)
+                    {
+                        selectFFMPEGClick(this, null);
+                    }
                 }
             }
         }
@@ -335,9 +403,26 @@ namespace FFMPEG_Overlay
 
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
-                outputPath = saveFile.SelectedPath;
-                labelPath.Text = outputPath;
-                saveFolderSet = true;
+                globalSettings.saveFolder = saveFile.SelectedPath;
+
+                if(globalSettings.IsSaveFolderValid())
+                {
+                    labelPath.Text = globalSettings.saveFolder;
+
+                    XMLSerializer.Save("settings", globalSettings);
+                }
+                else
+                {
+                    globalSettings.saveFolder = String.Empty;
+                    labelPath.Text = "No output directory set...";
+                    var Result = MessageBox.Show($"Некорректный путь - содержит кириллицу", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    if(Result == DialogResult.Retry)
+                    {
+                        SaveToButtonClick(this,null);
+                    }
+
+                }
+
             }
         }
 
@@ -365,13 +450,48 @@ namespace FFMPEG_Overlay
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (fileList.Items.Count > 0)
+            if (fileList.Items.Count > 0 && fileList.SelectedIndex >= 0)
                 fileList.Items.RemoveAt(fileList.SelectedIndex);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBoxACodec_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Enum.TryParse(comboBoxACodec.SelectedValue.ToString(), out selectedACodec);
+        }
+
+        private void comboExtention_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Enum.TryParse(comboExtention.SelectedValue.ToString(), out selectedExtension);
+        }
+
+        private void checkWidth_CheckedChanged(object sender, EventArgs e)
+        {
+            numericWidth.Enabled = checkWidth.Checked;
+        }
+
+        private void checkHeight_CheckedChanged(object sender, EventArgs e)
+        {
+            numericHeight.Enabled = checkHeight.Checked;
+        }
+
+        int GetTargetHeight()
+        {
+            if (checkHeight.Checked)
+                return (int)numericHeight.Value;
+            else
+                return -2;
+        }
+        int GetTargetWidth()
+        {
+            if (checkWidth.Checked)
+                return (int)numericWidth.Value;
+            else
+                return -2;
         }
     }
 
