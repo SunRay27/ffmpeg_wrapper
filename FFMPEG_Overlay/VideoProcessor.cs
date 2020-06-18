@@ -11,7 +11,7 @@ namespace FFMPEG_Overlay
     public class VideoProcessor
     {
         public enum VideoCodec { H264, H264_amd, H264_nvenc, H264_intel_qsv, H265, H265_nvenc, H265_amd, H265_intel_qsv, VP8, VP9, Copy };
-        public enum AudioCodec { Copy, Vorbis, WavPack, MP3 };
+        public enum AudioCodec { Copy, Vorbis, WavPack, MP3, Remove };
         public enum Preset { none, ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow };
         public enum OutExtension { mp4, mkv };
 
@@ -38,6 +38,9 @@ namespace FFMPEG_Overlay
         string ffmpegPath;
 
         Process process;
+
+
+        bool overWriteAllowed = false;
         public Process Process { get { return process; } }
 
         //public DataReceivedEventHandler onProcessPrint;
@@ -99,6 +102,9 @@ namespace FFMPEG_Overlay
                 case AudioCodec.WavPack:
                     audioCodec = "wavpack";
                     break;
+                case AudioCodec.Remove:
+                    audioCodec = "none";
+                    break;
                 default:
                     break;
             }
@@ -120,7 +126,7 @@ namespace FFMPEG_Overlay
                 flipAddon = "hflip,vflip,";
             else if (hflip)
                 flipAddon = "hflip,";
-            else
+            else if (vflip)
                 flipAddon = "vflip,";
 
             SetVideoCodecToString(codec);
@@ -136,22 +142,41 @@ namespace FFMPEG_Overlay
 
         public void StartProcessing()
         {
-            string command = string.Empty;
-            if (preset == "none")
-                command = $"-i {inputPath} -c:a {audioCodec} -c:v {videoCodec} -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M {outputPath}";
+            string command = $"-i \"{inputPath}\" -c:v {videoCodec}";
+            if (flipAddon == string.Empty && targetWidth == -2 && targetHeight == -2)
+            {
+                command += $" -b:v {bitRate}M";
+            }
             else
-                command = $"-i {inputPath} -c:a {audioCodec} -c:v {videoCodec} -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M -preset {preset} {outputPath}";
+            {
+                command += $" -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M";
+            }
+
+            if (preset == "none")
+            {
+                if (audioCodec != "none")
+                    command += $" -c:a {audioCodec} \"{outputPath}\"";
+                else
+                    command += $" -an \"{outputPath}\"";
+            }
+            else
+            {
+                if (audioCodec != "none")
+                    command += $" -c:a {audioCodec} -preset {preset} \"{outputPath}\"";
+                else
+                    command += $" -an -preset {preset} \"{outputPath}\"";
+            }
 
             process = new Process();
             process.StartInfo.FileName = ffmpegPath;
 
-            
+
             process.EnableRaisingEvents = true;
 
 
             {
-                 process.StartInfo.UseShellExecute = false;
-                 process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
 
 
 
@@ -162,7 +187,7 @@ namespace FFMPEG_Overlay
             //
 
             process.Exited += OnProcessExit;
-            //process.OutputDataReceived += new DataReceivedEventHandler(OnProcessPrint);
+            process.OutputDataReceived += new DataReceivedEventHandler(InterceptOutputAndUpdateUI);
             process.ErrorDataReceived += new DataReceivedEventHandler(InterceptOutputAndUpdateUI);
 
             process.StartInfo.Arguments = $"{command}";
@@ -177,11 +202,29 @@ namespace FFMPEG_Overlay
             worker.Show();
             worker.SetName(outputPath);
 
+
+            //check if we want to overwrite
+            if (System.IO.File.Exists(outputPath))
+            {
+                var dialogResult = MessageBox.Show($"Файл {outputPath} уже существует. Перезаписать?", "Подтверждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    overWriteAllowed = true;
+                }
+                else
+                {
+                    worker.abortButton_Click(this, null);
+                    return;
+                }
+            }
+
+
             string helloString = "//*************************************************************************************************************//" + Environment.NewLine +
                                  "//*****WELOCOME TO MY SUPER DUPER FFMPEG WRAPPER REENCODING PROCESS!!!!!!!!!!!!!****//" + Environment.NewLine +
                                  "//*************************************************************************************************************//" + Environment.NewLine +
-                                 
-                                 $"{command}" + Environment.NewLine+ Environment.NewLine ;
+
+                                 $"{command}" + Environment.NewLine + Environment.NewLine;
 
             worker.WriteLine(helloString);
 
@@ -191,14 +234,17 @@ namespace FFMPEG_Overlay
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
 
-            process.StandardInput.WriteLine("Y");
+            if (overWriteAllowed)
+            {
+                process.StandardInput.WriteLine("Y");
+            }
             //process.WaitForExit();
         }
 
 
         void OnProcessExit(object sender, EventArgs e)
         {
-            onProcessExit?.Invoke(sender,e);
+            onProcessExit?.Invoke(sender, e);
             worker.CompleteConversion();
         }
 
@@ -207,14 +253,15 @@ namespace FFMPEG_Overlay
             if (e.Data == null)
                 return;
 
-            if(e.Data.Contains("frame=") && e.Data.Contains("fps=") && e.Data.Contains("size=") && e.Data.Contains("time=") && e.Data.Contains("bitrate="))
+
+            if (e.Data.Contains("frame=") && e.Data.Contains("fps=") && e.Data.Contains("size=") && e.Data.Contains("time=") && e.Data.Contains("bitrate="))
             {
                 //it is a status string
                 worker.SetStatus(e.Data);
 
                 this.curTime = 0;
 
-                string time = e.Data.Split(new string[] { "time=", " bitrate=" },StringSplitOptions.RemoveEmptyEntries)[1];
+                string time = e.Data.Split(new string[] { "time=", " bitrate=" }, StringSplitOptions.RemoveEmptyEntries)[1];
 
                 int hours = Convert.ToInt32(time.Split(':')[0]);
                 int minutes = Convert.ToInt32(time.Split(':')[1]);
@@ -226,7 +273,7 @@ namespace FFMPEG_Overlay
                 //SetProgressBarValue(curTime);
 
             }
-            else if(e.Data.Contains("Duration:"))
+            else if (e.Data.Contains("Duration:"))
             {
                 string time = e.Data.Split(',')[0].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1];
 
@@ -252,15 +299,28 @@ namespace FFMPEG_Overlay
 
         public void Abort()
         {
-          
-            if(!process.HasExited)
-             process.Kill();
+            try
+            {
+                if (!process.HasExited)
+                    process.Kill();
+            }
+            catch
+            {
+
+            }
         }
 
         ~VideoProcessor()
         {
-            if (!process.HasExited)
-                process.Kill();
+            try
+            {
+                if (!process.HasExited)
+                    process.Kill();
+            }
+            catch
+            {
+
+            }
         }
 
     }

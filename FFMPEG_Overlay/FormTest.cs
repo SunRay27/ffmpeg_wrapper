@@ -28,7 +28,7 @@ namespace FFMPEG_Overlay
 
             public bool IsSaveFolderValid()
             {
-                return Directory.Exists(saveFolder) && !Regex.IsMatch(saveFolder, @"\p{IsCyrillic}");
+                return Directory.Exists(saveFolder);
             }
             public bool IsFFMPEGPathValid()
             {
@@ -132,13 +132,14 @@ namespace FFMPEG_Overlay
 
             if(globalSettings.IsFFMPEGPathValid())
             {
-                labelffmpegpath.Text = globalSettings.ffmpegPath;
-                labelffmpegpath.ForeColor = Color.Green;
+                //labelffmpegpath.Text = globalSettings.ffmpegPath;
+                //labelffmpegpath.ForeColor = Color.Green;
+                selectFFMPEGButton.Enabled = false;
             }
             else
             {
-                labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
-                labelffmpegpath.ForeColor = Color.Red;
+                //labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
+                //labelffmpegpath.ForeColor = Color.Red;
             }
             if (globalSettings.IsSaveFolderValid())
             {
@@ -180,18 +181,6 @@ namespace FFMPEG_Overlay
         //start all workers
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            bool foundCyrrilic = false;
-            foreach (var item in fileList.CheckedItems)
-            {
-                if (Regex.IsMatch(item.ToString(), @"\p{IsCyrillic}"))
-                {
-                    // there is at least one cyrillic character in the string
-                    MessageBox.Show($"FFMPEG (или же мой кривой код) не работает с кириллицей - поправь путь к файлу: {item.ToString()}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    foundCyrrilic = true;
-                }
-            }
-            if (foundCyrrilic)
-                return;
 
 
             if (fileList.CheckedItems.Count < 1)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
@@ -201,7 +190,7 @@ namespace FFMPEG_Overlay
             }
             if (!globalSettings.IsSaveFolderValid())// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
             {
-                MessageBox.Show($"Не выбрана папка для вывода (или содержит кириллицу)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Не выбрана папка для вывода", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             //todo: make some certain method to check if we have it
@@ -270,8 +259,8 @@ namespace FFMPEG_Overlay
             else
             {
 
-                try
-                {
+                
+                
                     for (int i = 0; i < fileList.CheckedItems.Count; i++)
                     {
                         string[] splitName = fileList.CheckedItems[i].ToString().Split('\\');
@@ -303,12 +292,8 @@ namespace FFMPEG_Overlay
                         // UpdateThreads();
 
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Something went wrong: {ex.Message}", "ERROR!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                
+
             }
         }
 
@@ -340,7 +325,7 @@ namespace FFMPEG_Overlay
         //Lock/Unlock UI while processing
         void Lock(bool val)
         {
-            openFileButton.Enabled = !val;
+            //openFileButton.Enabled = !val;
             buttonStart.Enabled = !val;
 
             comboBoxCodec.Enabled = !val;
@@ -364,38 +349,7 @@ namespace FFMPEG_Overlay
             Enum.TryParse(comboBoxPreset.SelectedValue.ToString(), out selectedPreset);
         }
 
-        //open file dialog to open ffmpeg
-        private void selectFFMPEGClick(object sender, EventArgs e)
-        {
-            OpenFileDialog fileSelect = new OpenFileDialog();
-            fileSelect.Multiselect = false;
-
-            fileSelect.Filter = "ffmpeg.exe |*.exe;";
-            if (fileSelect.ShowDialog() == DialogResult.OK)
-            {
-                globalSettings.ffmpegPath = fileSelect.FileName;
-                if(globalSettings.IsFFMPEGPathValid())
-                {
-                    labelffmpegpath.Text = fileSelect.FileName;
-                    labelffmpegpath.ForeColor = Color.Green;
-
-                    XMLSerializer.Save("settings", globalSettings);
-                }
-                else
-                {
-                    labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
-                    labelffmpegpath.ForeColor = Color.Red;
-                    globalSettings.ffmpegPath = string.Empty;
-
-
-                    var Result = MessageBox.Show($"Файл не прошёл проверку: может это не ffmpeg?", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                    if (Result == DialogResult.Retry)
-                    {
-                        selectFFMPEGClick(this, null);
-                    }
-                }
-            }
-        }
+        
 
         private void SaveToButtonClick(object sender, EventArgs e)
         {
@@ -405,7 +359,7 @@ namespace FFMPEG_Overlay
             {
                 globalSettings.saveFolder = saveFile.SelectedPath;
 
-                if(globalSettings.IsSaveFolderValid())
+                if (globalSettings.IsSaveFolderValid())
                 {
                     labelPath.Text = globalSettings.saveFolder;
 
@@ -416,9 +370,9 @@ namespace FFMPEG_Overlay
                     globalSettings.saveFolder = String.Empty;
                     labelPath.Text = "No output directory set...";
                     var Result = MessageBox.Show($"Некорректный путь - содержит кириллицу", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                    if(Result == DialogResult.Retry)
+                    if (Result == DialogResult.Retry)
                     {
-                        SaveToButtonClick(this,null);
+                        SaveToButtonClick(this, null);
                     }
 
                 }
@@ -492,6 +446,39 @@ namespace FFMPEG_Overlay
                 return (int)numericWidth.Value;
             else
                 return -2;
+        }
+        //open file dialog to open ffmpeg
+        private void selectFFMPEGButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileSelect = new OpenFileDialog();
+            fileSelect.Multiselect = false;
+
+            fileSelect.Filter = "ffmpeg.exe |*.exe;";
+            if (fileSelect.ShowDialog() == DialogResult.OK)
+            {
+                globalSettings.ffmpegPath = fileSelect.FileName;
+                if (globalSettings.IsFFMPEGPathValid())
+                {
+                    // labelffmpegpath.Text = fileSelect.FileName;
+                    // labelffmpegpath.ForeColor = Color.Green;
+
+                    XMLSerializer.Save("settings", globalSettings);
+                    selectFFMPEGButton.Enabled = false;
+                }
+                else
+                {
+                    // labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
+                    //labelffmpegpath.ForeColor = Color.Red;
+                    globalSettings.ffmpegPath = string.Empty;
+
+
+                    var Result = MessageBox.Show($"Файл не прошёл проверку: может это не ffmpeg?", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    if (Result == DialogResult.Retry)
+                    {
+                        selectFFMPEGButton_Click(this, null);
+                    }
+                }
+            }
         }
     }
 

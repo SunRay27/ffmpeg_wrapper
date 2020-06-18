@@ -41,14 +41,12 @@
             this.numericBitrate = new System.Windows.Forms.NumericUpDown();
             this.checkBoxConcat = new System.Windows.Forms.CheckBox();
             this.buttonStart = new System.Windows.Forms.Button();
-            this.labelffmpegpath = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectFFMPEGButton = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkHFlip = new System.Windows.Forms.CheckBox();
+            this.checkVFlip = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.checkHeight = new System.Windows.Forms.CheckBox();
             this.checkWidth = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -64,29 +62,30 @@
             this.comboExtention = new System.Windows.Forms.ComboBox();
             this.textPostfix = new System.Windows.Forms.TextBox();
             this.textPrefix = new System.Windows.Forms.TextBox();
-            this.checkHeight = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.checkVFlip = new System.Windows.Forms.CheckBox();
-            this.checkHFlip = new System.Windows.Forms.CheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectFFMPEGButton = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericBitrate)).BeginInit();
-            this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericWidth)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelPath
             // 
             this.labelPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelPath.AutoSize = true;
-            this.labelPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelPath.Location = new System.Drawing.Point(9, 737);
+            this.labelPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.labelPath.Location = new System.Drawing.Point(12, 741);
             this.labelPath.Name = "labelPath";
-            this.labelPath.Size = new System.Drawing.Size(170, 17);
+            this.labelPath.Size = new System.Drawing.Size(128, 13);
             this.labelPath.TabIndex = 4;
             this.labelPath.TabStop = true;
             this.labelPath.Text = "Output path will be here...";
@@ -99,9 +98,9 @@
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.fileList);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 27);
+            this.groupBox1.Location = new System.Drawing.Point(12, 36);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(440, 707);
+            this.groupBox1.Size = new System.Drawing.Size(440, 698);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Файлы";
@@ -109,9 +108,10 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(232, 667);
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.button1.Location = new System.Drawing.Point(297, 664);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(201, 34);
+            this.button1.Size = new System.Drawing.Size(137, 28);
             this.button1.TabIndex = 6;
             this.button1.Text = "Исключить выбранный";
             this.button1.UseVisualStyleBackColor = true;
@@ -122,12 +122,13 @@
             this.fileList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.fileList.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.fileList.FormattingEnabled = true;
             this.fileList.HorizontalScrollbar = true;
             this.fileList.Location = new System.Drawing.Point(10, 25);
             this.fileList.Name = "fileList";
             this.fileList.ScrollAlwaysVisible = true;
-            this.fileList.Size = new System.Drawing.Size(423, 613);
+            this.fileList.Size = new System.Drawing.Size(423, 634);
             this.fileList.TabIndex = 5;
             // 
             // label4
@@ -248,59 +249,6 @@
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
-            // labelffmpegpath
-            // 
-            this.labelffmpegpath.AutoSize = true;
-            this.labelffmpegpath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelffmpegpath.Location = new System.Drawing.Point(55, 3);
-            this.labelffmpegpath.Name = "labelffmpegpath";
-            this.labelffmpegpath.Size = new System.Drawing.Size(116, 15);
-            this.labelffmpegpath.TabIndex = 6;
-            this.labelffmpegpath.Text = "path_to_ffmpeg.exe";
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(914, 24);
-            this.menuStrip1.TabIndex = 11;
-            this.menuStrip1.Text = "menuStrip";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openFileButton,
-            this.saveToButton,
-            this.selectFFMPEGButton});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
-            this.toolStripMenuItem1.Text = "Файл";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // openFileButton
-            // 
-            this.openFileButton.Name = "openFileButton";
-            this.openFileButton.Size = new System.Drawing.Size(184, 22);
-            this.openFileButton.Text = "Открыть...";
-            this.openFileButton.Click += new System.EventHandler(this.OpenFilesClick);
-            // 
-            // saveToButton
-            // 
-            this.saveToButton.Name = "saveToButton";
-            this.saveToButton.Size = new System.Drawing.Size(184, 22);
-            this.saveToButton.Text = "Сохранять в...";
-            this.saveToButton.Click += new System.EventHandler(this.SaveToButtonClick);
-            // 
-            // selectFFMPEGButton
-            // 
-            this.selectFFMPEGButton.Name = "selectFFMPEGButton";
-            this.selectFFMPEGButton.Size = new System.Drawing.Size(184, 22);
-            this.selectFFMPEGButton.Text = "Настройка ffmpeg...";
-            this.selectFFMPEGButton.Click += new System.EventHandler(this.selectFFMPEGClick);
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -337,6 +285,52 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Видео";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // checkHFlip
+            // 
+            this.checkHFlip.AutoSize = true;
+            this.checkHFlip.Location = new System.Drawing.Point(15, 140);
+            this.checkHFlip.Name = "checkHFlip";
+            this.checkHFlip.Size = new System.Drawing.Size(156, 17);
+            this.checkHFlip.TabIndex = 21;
+            this.checkHFlip.Text = "Отразить по горизонтали";
+            this.checkHFlip.UseVisualStyleBackColor = true;
+            // 
+            // checkVFlip
+            // 
+            this.checkVFlip.AutoSize = true;
+            this.checkVFlip.Location = new System.Drawing.Point(15, 117);
+            this.checkVFlip.Name = "checkVFlip";
+            this.checkVFlip.Size = new System.Drawing.Size(145, 17);
+            this.checkVFlip.TabIndex = 20;
+            this.checkVFlip.Text = "Отразить по вериткали";
+            this.checkVFlip.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(15, 277);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(393, 62);
+            this.textBox1.TabIndex = 19;
+            this.textBox1.Text = "При изменении только ширины/высоты второй параметр определяется в соответсвии с с" +
+    "оотношением сторон входного файла\r\n\r\nНапример: входное видео 1280x720, заменим ш" +
+    "ирину на 320 ---> 320x180\r\n\r\n";
+            // 
+            // checkHeight
+            // 
+            this.checkHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkHeight.AutoSize = true;
+            this.checkHeight.Location = new System.Drawing.Point(278, 228);
+            this.checkHeight.Name = "checkHeight";
+            this.checkHeight.Size = new System.Drawing.Size(116, 17);
+            this.checkHeight.TabIndex = 18;
+            this.checkHeight.Text = "Изменить высоту";
+            this.checkHeight.UseVisualStyleBackColor = true;
+            this.checkHeight.CheckedChanged += new System.EventHandler(this.checkHeight_CheckedChanged);
             // 
             // checkWidth
             // 
@@ -425,7 +419,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(425, 255);
+            this.tabPage3.Size = new System.Drawing.Size(425, 357);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Аудио";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -464,7 +458,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(425, 255);
+            this.tabPage4.Size = new System.Drawing.Size(425, 357);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Прочее";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -524,51 +518,48 @@
             this.textPrefix.Size = new System.Drawing.Size(100, 20);
             this.textPrefix.TabIndex = 0;
             // 
-            // checkHeight
+            // menuStrip1
             // 
-            this.checkHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkHeight.AutoSize = true;
-            this.checkHeight.Location = new System.Drawing.Point(278, 228);
-            this.checkHeight.Name = "checkHeight";
-            this.checkHeight.Size = new System.Drawing.Size(116, 17);
-            this.checkHeight.TabIndex = 18;
-            this.checkHeight.Text = "Изменить высоту";
-            this.checkHeight.UseVisualStyleBackColor = true;
-            this.checkHeight.CheckedChanged += new System.EventHandler(this.checkHeight_CheckedChanged);
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.selectFFMPEGButton});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(914, 24);
+            this.menuStrip1.TabIndex = 11;
+            this.menuStrip1.Text = "menuStrip";
             // 
-            // textBox1
+            // toolStripMenuItem1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(15, 277);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(393, 62);
-            this.textBox1.TabIndex = 19;
-            this.textBox1.Text = "При изменении только ширины/высоты второй параметр определяется в соответсвии с с" +
-    "оотношением сторон входного файла\r\n\r\nНапример: входное видео 1280x720, заменим ш" +
-    "ирину на 320 ---> 320x180\r\n\r\n";
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openFileButton,
+            this.saveToButton});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(48, 20);
+            this.toolStripMenuItem1.Text = "Файл";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
-            // checkVFlip
+            // openFileButton
             // 
-            this.checkVFlip.AutoSize = true;
-            this.checkVFlip.Location = new System.Drawing.Point(15, 117);
-            this.checkVFlip.Name = "checkVFlip";
-            this.checkVFlip.Size = new System.Drawing.Size(145, 17);
-            this.checkVFlip.TabIndex = 20;
-            this.checkVFlip.Text = "Отразить по вериткали";
-            this.checkVFlip.UseVisualStyleBackColor = true;
+            this.openFileButton.Name = "openFileButton";
+            this.openFileButton.Size = new System.Drawing.Size(227, 22);
+            this.openFileButton.Text = "Добавить видео...";
+            this.openFileButton.Click += new System.EventHandler(this.OpenFilesClick);
             // 
-            // checkHFlip
+            // saveToButton
             // 
-            this.checkHFlip.AutoSize = true;
-            this.checkHFlip.Location = new System.Drawing.Point(15, 140);
-            this.checkHFlip.Name = "checkHFlip";
-            this.checkHFlip.Size = new System.Drawing.Size(156, 17);
-            this.checkHFlip.TabIndex = 21;
-            this.checkHFlip.Text = "Отразить по горизонтали";
-            this.checkHFlip.UseVisualStyleBackColor = true;
+            this.saveToButton.Name = "saveToButton";
+            this.saveToButton.Size = new System.Drawing.Size(227, 22);
+            this.saveToButton.Text = "Указать папку сохранений...";
+            this.saveToButton.Click += new System.EventHandler(this.SaveToButtonClick);
+            // 
+            // selectFFMPEGButton
+            // 
+            this.selectFFMPEGButton.Name = "selectFFMPEGButton";
+            this.selectFFMPEGButton.Size = new System.Drawing.Size(158, 20);
+            this.selectFFMPEGButton.Text = "Указать путь к ffmpeg.exe";
+            this.selectFFMPEGButton.Click += new System.EventHandler(this.selectFFMPEGButton_Click);
             // 
             // MainWindow
             // 
@@ -577,7 +568,6 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(914, 763);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.labelffmpegpath);
             this.Controls.Add(this.labelPath);
             this.Controls.Add(this.checkBoxConcat);
             this.Controls.Add(this.buttonStart);
@@ -589,8 +579,6 @@
             this.Text = "FFMPEG wrapper";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericBitrate)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -600,6 +588,8 @@
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -617,13 +607,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxCodec;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label labelffmpegpath;
         private System.Windows.Forms.CheckedListBox fileList;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem openFileButton;
-        private System.Windows.Forms.ToolStripMenuItem saveToButton;
-        private System.Windows.Forms.ToolStripMenuItem selectFFMPEGButton;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Button button1;
@@ -646,6 +630,11 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox checkHFlip;
         private System.Windows.Forms.CheckBox checkVFlip;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openFileButton;
+        private System.Windows.Forms.ToolStripMenuItem saveToButton;
+        private System.Windows.Forms.ToolStripMenuItem selectFFMPEGButton;
     }
 }
 

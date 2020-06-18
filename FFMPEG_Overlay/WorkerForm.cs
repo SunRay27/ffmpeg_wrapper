@@ -85,8 +85,11 @@ namespace FFMPEG_Overlay
             // progressBar.Invoke((MethodInvoker)(() => progressBar.BackColor = Color.Yellow));
 
         }
+        public void ShowOverwriteQuestion(string outputPath)
+        {
 
-        private void abortButton_Click(object sender, EventArgs e)
+        }
+        public void abortButton_Click(object sender, EventArgs e)
         {
             if (endedOperation)
             {
