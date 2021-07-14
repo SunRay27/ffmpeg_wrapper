@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace FFMPEG_Overlay
 {
-    static class StartPoint
+    static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.
