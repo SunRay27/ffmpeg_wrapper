@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace FFMPEG_Wrapper.Forms.FormUtils
@@ -61,7 +58,7 @@ namespace FFMPEG_Wrapper.Forms.FormUtils
             // SolidBrush brush = new SolidBrush(Color.White);
             // g.FillRoundedRectangle(brush, 12, 12, this.Width - 44, this.Height - 64, 10);
             g.FillRoundedRectangle(new SolidBrush(_fillColor), _offsetX, _offsetY, this.Width - (_offsetX * 2), this.Height - (_offsetY * 2), _borderRadius);
-            g.DrawRoundedRectangle(new Pen(_borderColor, _borderWidth), _offsetX, _offsetY, this.Width - (_offsetX*2), this.Height - (_offsetY * 2), _borderRadius);
+            g.DrawRoundedRectangle(new Pen(_borderColor, _borderWidth), _offsetX, _offsetY, this.Width - (_offsetX * 2), this.Height - (_offsetY * 2), _borderRadius);
         }
         protected override void OnResize(EventArgs eventargs)
         {

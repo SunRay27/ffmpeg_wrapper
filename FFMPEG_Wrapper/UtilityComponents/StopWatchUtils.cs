@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace FFMPEG_Wrapper
 {
@@ -35,7 +32,7 @@ namespace FFMPEG_Wrapper
             return ret;
         }
         public static TimeSpan GetMinutes(this Stopwatch sw)
-        { 
+        {
 
             float elapsedMin = ((float)sw.ElapsedMilliseconds / 1000) / 60;
             TimeSpan ret = TimeSpan.FromMinutes(elapsedMin);

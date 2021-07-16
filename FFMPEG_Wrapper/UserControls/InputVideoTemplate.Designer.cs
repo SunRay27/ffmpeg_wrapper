@@ -31,6 +31,7 @@ namespace FFMPEG_Wrapper.UserControls
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputVideoTemplate));
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.buttonRemove = new System.Windows.Forms.Button();
             this.fileFormat = new System.Windows.Forms.Label();
             this.fileName = new System.Windows.Forms.Label();
             this.preview = new System.Windows.Forms.PictureBox();
@@ -45,6 +46,7 @@ namespace FFMPEG_Wrapper.UserControls
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.mainPanel.Controls.Add(this.buttonRemove);
             this.mainPanel.Controls.Add(this.checkBox);
             this.mainPanel.Controls.Add(this.fileFormat);
             this.mainPanel.Controls.Add(this.fileName);
@@ -53,6 +55,18 @@ namespace FFMPEG_Wrapper.UserControls
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(194, 188);
             this.mainPanel.TabIndex = 1;
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.FlatAppearance.BorderSize = 0;
+            this.buttonRemove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRemove.Image = ((System.Drawing.Image)(resources.GetObject("buttonRemove.Image")));
+            this.buttonRemove.Location = new System.Drawing.Point(169, 163);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(25, 25);
+            this.buttonRemove.TabIndex = 4;
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
             // 
             // fileFormat
             // 
@@ -93,7 +107,6 @@ namespace FFMPEG_Wrapper.UserControls
             // 
             // checkBox
             // 
-            this.checkBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox.Appearance = System.Windows.Forms.Appearance.Button;
             this.checkBox.BoxBackColor = System.Drawing.Color.Transparent;
             this.checkBox.BoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(42)))), ((int)(((byte)(49)))));
@@ -102,7 +115,7 @@ namespace FFMPEG_Wrapper.UserControls
             this.checkBox.BoxSize = 24;
             this.checkBox.FlatAppearance.BorderSize = 0;
             this.checkBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox.Location = new System.Drawing.Point(166, 3);
+            this.checkBox.Location = new System.Drawing.Point(3, 3);
             this.checkBox.Name = "checkBox";
             this.checkBox.Size = new System.Drawing.Size(25, 25);
             this.checkBox.TabIndex = 3;
@@ -137,5 +150,6 @@ namespace FFMPEG_Wrapper.UserControls
         private System.Windows.Forms.Label fileName;
         private System.Windows.Forms.PictureBox preview;
         private Forms.FormUtils.BigCheckBox checkBox;
+        private System.Windows.Forms.Button buttonRemove;
     }
 }

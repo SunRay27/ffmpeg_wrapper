@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -24,7 +19,7 @@ public static class XMLSerializer
     }
     public static T Load<T>(string fileName)
     {
-        
+
         if (File.Exists(savePath + $"\\{fileName}.xml"))
         {
             T res;
@@ -40,6 +35,6 @@ public static class XMLSerializer
             throw new Exception($"No file on load path");
         }
 
-        
+
     }
 }

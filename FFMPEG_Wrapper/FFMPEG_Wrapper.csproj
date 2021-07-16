@@ -13,6 +13,21 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,6 +88,7 @@
     <Compile Include="Forms\MainWindow\EditPanel.Designer.cs">
       <DependentUpon>EditPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MainWindow\FileManager.cs" />
     <Compile Include="UserControls\FileInputPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,6 +101,7 @@
     <Compile Include="UserControls\InputVideoTemplate.Designer.cs">
       <DependentUpon>InputVideoTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="UtilityComponents\CommandRunner.cs" />
     <Compile Include="UtilityComponents\XMLSerializer.cs" />
     <Compile Include="Forms\MainWindow\MainWindow.cs">
       <SubType>Form</SubType>
@@ -140,6 +157,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using FFMPEG_Wrapper.Forms.MainWindow;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace FFMPEG_Wrapper.UserControls
@@ -28,20 +24,35 @@ namespace FFMPEG_Wrapper.UserControls
 
         private Color _checkedBackColor = Color.LimeGreen;
         private Color _uncheckedBackColor = Color.FromArgb(39, 42, 49);
+        private FileManager.InputFile inputFile;
         public InputVideoTemplate()
         {
             InitializeComponent();
             UpdateBorderColor(Selected);
-            
+
         }
 
         public void UpdateBorderColor(bool selected)
         {
-            this.BackColor = selected? _checkedBackColor : _uncheckedBackColor;
+            this.BackColor = selected ? _checkedBackColor : _uncheckedBackColor;
         }
         private void checkBox_CheckedChanged(object sender, EventArgs e)
         {
             UpdateBorderColor(Selected);
+        }
+        public void ApplyFileInfo(FileManager.InputFile inputFile)
+        {
+            this.inputFile = inputFile;
+            this.fileName.Text = inputFile.fileName;
+            this.fileFormat.Text = $"{inputFile.width}x{inputFile.height} .{inputFile.extension}";
+            preview.BackgroundImage = Image.FromFile(inputFile.previewPath);
+        }
+
+        private void buttonRemove_Click(object sender, EventArgs e)
+        {
+            FileManager.Instance.RemoveFile(inputFile);
+            preview.BackgroundImage = null;
+            Parent.Controls.Remove(this);
         }
     }
 }

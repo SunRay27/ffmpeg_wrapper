@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace FFMPEG_Wrapper
 {
@@ -59,8 +51,8 @@ namespace FFMPEG_Wrapper
         }
         public void SetStatus(string status)
         {
-           frameText.Invoke((MethodInvoker)(() => frameText.Text = status));
-            
+            frameText.Invoke((MethodInvoker)(() => frameText.Text = status));
+
             //estimate
         }
 
@@ -78,7 +70,7 @@ namespace FFMPEG_Wrapper
 
             SetProgressBarValue(progressBar.Maximum);
 
-            if(!fromAbort)
+            if (!fromAbort)
                 progressBar.Invoke((MethodInvoker)(() => progressBar.SetState(3)));
             else
                 progressBar.Invoke((MethodInvoker)(() => progressBar.SetState(2)));
@@ -101,7 +93,7 @@ namespace FFMPEG_Wrapper
                 processor.Abort();
                 progressBar.Value = progressBar.Maximum;
                 fromAbort = true;
-               // progressBar.BackColor = Color.Red;
+                // progressBar.BackColor = Color.Red;
             }
         }
     }

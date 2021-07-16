@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FFMPEG_Wrapper.UtilityComponents;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -9,11 +10,18 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
     public class Config
     {
         public static string ConfigFileName { get; } = "config";
-        public string SaveFolder { get { return savePath; } }
-        public string FFMPEGPath { get { return ffmpegPath; } }
+        public string SaveFolder { get { return savePath; } set { savePath = value; } }
+        public string FFMPEGPath { get { return ffmpegPath; } set { ffmpegPath = value; } }
+        public string FFPROBEPath { get { return ffprobePath; } set { ffprobePath = value; } }
+
+
+        public static Config Instance { get { return instance; } }
+        private static Config instance;
+
 
         private string savePath = String.Empty;
         private string ffmpegPath = String.Empty;
+        private string ffprobePath = String.Empty;
 
         public bool SaveFolderValid
         {
@@ -23,7 +31,18 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
         {
             get { return IsFFMPEGPathValid(ffmpegPath); }
         }
+        public bool FFPROBEPathValid
+        {
+            get { return IsFFMPEGPathValid(ffmpegPath); }
+        }
 
+        public Config()
+        {
+            if (instance == null)
+                instance = this;
+            else
+                throw new Exception("Config instance alread y exists!!!");
+        }
 
         //called if config file doesn't exist
         public void Init()
@@ -34,7 +53,13 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
             if (IsFFMPEGPathValid(possiblePath))
                 ffmpegPath = possiblePath;
 
-            XMLSerializer.Save("config", this);
+            // try to find ffprobe in root folder
+            string possiblePath2 = $"{Application.StartupPath}\\ffprobe.exe";
+
+            if (IsFFPROBEPathValid(possiblePath2))
+                ffprobePath = possiblePath2;
+
+            XMLSerializer.Save("config", instance);
         }
         public bool AllPathsExist()
         {
@@ -116,32 +141,29 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
 
             if (ffmpegPath.Contains("ffmpeg.exe"))
             {
-                try
-                {
-                    Process process = new Process();
-
-                    process.StartInfo.FileName = ffmpegPath;
-                    process.StartInfo.UseShellExecute = false;
-                    process.StartInfo.CreateNoWindow = true;
-                    process.StartInfo.RedirectStandardError = true;
-                    process.Start();
-
-                    string message = process.StandardError.ReadToEnd();
-
-                    if (message.Contains("ffmpeg version"))
-                        result = true;
-
-                    if (!process.HasExited)
-                        process.Kill();
-                }
-                catch
-                { }
+                string message = CommandRunner.RunCommand(ffmpegPath, "");
+                if (message.Contains("ffmpeg version"))
+                    result = true;
             }
 
 
             return result;
         }
 
+        bool IsFFPROBEPathValid(string ffprobePath)
+        {
+            bool result = false;
 
+            if (ffprobePath.Contains("ffprobe.exe"))
+            {
+                string message = CommandRunner.RunCommand(ffprobePath, "");
+
+                if (message.Contains("ffprobe version"))
+                    result = true;
+            }
+
+
+            return result;
+        }
     }
 }

@@ -1,16 +1,7 @@
 ﻿using FFMPEG_Wrapper.Forms.MainWindow;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -21,7 +12,7 @@ namespace FFMPEG_Wrapper
     {
 
 
-        Config config;
+        //Config config;
 
 
         VideoProcessor.VideoCodec selectedCodec;
@@ -49,6 +40,7 @@ namespace FFMPEG_Wrapper
         }
         void Start()
         {
+
             /* UI REBUILD
             comboBoxCodec.DataSource = Enum.GetValues(typeof(VideoProcessor.VideoCodec));
             comboBoxACodec.DataSource = Enum.GetValues(typeof(VideoProcessor.AudioCodec));
@@ -60,63 +52,28 @@ namespace FFMPEG_Wrapper
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
 
             Thread.CurrentThread.CurrentCulture = customCulture;
-             /* UI REBUILD
-            bitRate = (float)numericBitrate.Value / 1024f;
-            label4.Text = $"{bitRate} Mb/s";
-             */
-            CreateTempFolders();
-        }
 
-        //FFMPEG path + (some temp folders?)
-        void CreateTempFolders()
-        {
-            workingFolder = Application.StartupPath;
-            tempFolder = workingFolder + @"\temp";
-
-            if (!Directory.Exists(tempFolder))
-                Directory.CreateDirectory(tempFolder);
-
-            fileListPath = tempFolder + @"\files.txt";
-            File.WriteAllText(fileListPath, "");
+            FileManager manager = new FileManager();
 
             //not first start...
             if (XMLSerializer.Exist(Config.ConfigFileName))
             {
-                config = XMLSerializer.Load<Config>(Config.ConfigFileName);
+                Config config = XMLSerializer.Load<Config>(Config.ConfigFileName);
             }
             else
             {
-                config = new Config();
+                Config config = new Config();
                 config.Init();
             }
 
-            if (config.FFMPEGPathValid)
-            {
-                //labelffmpegpath.Text = globalSettings.ffmpegPath;
-                //labelffmpegpath.ForeColor = Color.Green;
-                /* UI REBUILD
-                selectFFMPEGButton.Enabled = false;
-                */
-            }
-            else
-            {
-                //labelffmpegpath.Text = "Укажите путь к ffmpeg.exe";
-                //labelffmpegpath.ForeColor = Color.Red;
-            }
-            if (config.SaveFolderValid)
-            {
-                 /* UI REBUILD
-                labelPath.Text = config.SaveFolder;
-                 */
-            }
-            else
-            {
-                 /* UI REBUILD
-                labelPath.Text = "No output directory set...";
-                 */
-            }
-
+            /* UI REBUILD
+           bitRate = (float)numericBitrate.Value / 1024f;
+           label4.Text = $"{bitRate} Mb/s";
+            */
+            
         }
+
+        //FFMPEG path + (some temp folders?)
 
 
 
@@ -124,92 +81,92 @@ namespace FFMPEG_Wrapper
         //on concat toggle value changed
         private void CheckBoxConcat_CheckedChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            concat = checkBoxConcat.Checked;
-            comboBoxCodec.Enabled = !concat;
-            comboBoxPreset.Enabled = !concat;
-            numericBitrate.Enabled = !concat;
-             */
+            /* UI REBUILD
+           concat = checkBoxConcat.Checked;
+           comboBoxCodec.Enabled = !concat;
+           comboBoxPreset.Enabled = !concat;
+           numericBitrate.Enabled = !concat;
+            */
         }
 
         //on click on out path
         private void LabelPath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-             /* UI REBUILD
-            if (config.SaveFolderValid)
-                Process.Start(labelPath.Text);
-             */
+            /* UI REBUILD
+           if (config.SaveFolderValid)
+               Process.Start(labelPath.Text);
+            */
         }
 
         // on chnage bitrateField
         private void NumericBitrate_ValueChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            bitRate = (float)numericBitrate.Value / 1024;
-            label4.Text = $"{bitRate} Mb/s";
-             */
+            /* UI REBUILD
+           bitRate = (float)numericBitrate.Value / 1024;
+           label4.Text = $"{bitRate} Mb/s";
+            */
         }
 
         //start all workers
         private void ButtonStart_Click(object sender, EventArgs e)
         {
 
-             /* UI REBUILD
-            if (fileList.CheckedItems.Count < 1)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
-            {
-                MessageBox.Show($"Не выбраны файлы для обработки (должна стоять галочка)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (!config.SaveFolderValid)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
-            {
-                MessageBox.Show($"Не выбрана папка для вывода", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            //todo: make some certain method to check if we have it
-            if (!config.FFMPEGPathValid)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
-            {
-                MessageBox.Show($"Не указан путь к ffmpeg.exe", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            /* UI REBUILD
+           if (fileList.CheckedItems.Count < 1)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
+           {
+               MessageBox.Show($"Не выбраны файлы для обработки (должна стоять галочка)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               return;
+           }
+           if (!config.SaveFolderValid)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
+           {
+               MessageBox.Show($"Не выбрана папка для вывода", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               return;
+           }
+           //todo: make some certain method to check if we have it
+           if (!config.FFMPEGPathValid)// || !saveFolderSet || !ffmpegPath.Contains("ffmpeg"))
+           {
+               MessageBox.Show($"Не указан путь к ffmpeg.exe", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               return;
+           }
 
 
 
 
 
 
-            for (int i = 0; i < fileList.CheckedItems.Count; i++)
-            {
-                string[] splitName = fileList.CheckedItems[i].ToString().Split('\\');
-                string originalName = splitName[splitName.Length - 1];
-                originalName = originalName.Split('.')[0];
+           for (int i = 0; i < fileList.CheckedItems.Count; i++)
+           {
+               string[] splitName = fileList.CheckedItems[i].ToString().Split('\\');
+               string originalName = splitName[splitName.Length - 1];
+               originalName = originalName.Split('.')[0];
 
-                VideoProcessor videoProcessor = new VideoProcessor
-                    (
-                    fileList.CheckedItems[i].ToString(),
-                    config.SaveFolder,
-                    $"{textPrefix.Text}{originalName}{textPostfix.Text}",
-                    selectedCodec,
-                    selectedACodec,
-                    selectedPreset,
-                    selectedExtension,
-                    bitRate,
-                    config.FFMPEGPath,
-                    GetTargetWidth(),
-                    GetTargetHeight(),
-                    checkHFlip.Checked,
-                    checkVFlip.Checked
-                    );
+               VideoProcessor videoProcessor = new VideoProcessor
+                   (
+                   fileList.CheckedItems[i].ToString(),
+                   config.SaveFolder,
+                   $"{textPrefix.Text}{originalName}{textPostfix.Text}",
+                   selectedCodec,
+                   selectedACodec,
+                   selectedPreset,
+                   selectedExtension,
+                   bitRate,
+                   config.FFMPEGPath,
+                   GetTargetWidth(),
+                   GetTargetHeight(),
+                   checkHFlip.Checked,
+                   checkVFlip.Checked
+                   );
 
-                videoProcessor.onProcessExit += Converter_Exited;
+               videoProcessor.onProcessExit += Converter_Exited;
 
-                videoProcessor.StartProcessing();
+               videoProcessor.StartProcessing();
 
-                //threads++;
-                // UpdateThreads();
+               //threads++;
+               // UpdateThreads();
 
-            }
+           }
 
-            */
+           */
 
         }
 
@@ -222,68 +179,68 @@ namespace FFMPEG_Wrapper
         //Lock/Unlock UI while processing
         void Lock(bool val)
         {
-             /* UI REBUILD
-            //openFileButton.Enabled = !val;
-            buttonStart.Enabled = !val;
+            /* UI REBUILD
+           //openFileButton.Enabled = !val;
+           buttonStart.Enabled = !val;
 
-            comboBoxCodec.Enabled = !val;
-            comboBoxPreset.Enabled = !val;
+           comboBoxCodec.Enabled = !val;
+           comboBoxPreset.Enabled = !val;
 
-            checkBoxConcat.Enabled = !val;
-            numericBitrate.Enabled = !val;
+           checkBoxConcat.Enabled = !val;
+           numericBitrate.Enabled = !val;
 
-            */
+           */
         }
 
         //assign codec value from comboBox
         private void ComboBoxCodec_SelectedIndexChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            Enum.TryParse(comboBoxCodec.SelectedValue.ToString(), out selectedCodec);
-             */
+            /* UI REBUILD
+           Enum.TryParse(comboBoxCodec.SelectedValue.ToString(), out selectedCodec);
+            */
         }
 
         //assign codec preset from comboBox
         private void ComboBoxPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            Enum.TryParse(comboBoxPreset.SelectedValue.ToString(), out selectedPreset);
-             */
+            /* UI REBUILD
+           Enum.TryParse(comboBoxPreset.SelectedValue.ToString(), out selectedPreset);
+            */
         }
 
 
 
         private void SaveToButtonClick(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            bool requestResult = config.RequestSaveFolder();
-            if(requestResult)
-            labelPath.Text = config.SaveFolder;
-             */
+            /* UI REBUILD
+           bool requestResult = config.RequestSaveFolder();
+           if(requestResult)
+           labelPath.Text = config.SaveFolder;
+            */
         }
 
         private void OpenFilesClick(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            OpenFileDialog fileSelect = new OpenFileDialog();
-            fileSelect.Multiselect = true;
+            /* UI REBUILD
+           OpenFileDialog fileSelect = new OpenFileDialog();
+           fileSelect.Multiselect = true;
 
-            //inputPaths = new List<string>();
-            if (fileSelect.ShowDialog() == DialogResult.OK)
-            {
-                string result = String.Empty;
+           //inputPaths = new List<string>();
+           if (fileSelect.ShowDialog() == DialogResult.OK)
+           {
+               string result = String.Empty;
 
-                for (int i = 0; i < fileSelect.FileNames.Length; i++)
-                {
-                    result += fileSelect.FileNames[i] + "\n";
-                    fileList.Items.Add(fileSelect.FileNames[i]);
-                    //inputPaths.Add(fileSelect.FileNames[i]);
-                }
-                // load paths to textBox
-                // fileList.Items.Add(result);
-                //textBoxFiles.Text = result;
-            }
-             */
+               for (int i = 0; i < fileSelect.FileNames.Length; i++)
+               {
+                   result += fileSelect.FileNames[i] + "\n";
+                   fileList.Items.Add(fileSelect.FileNames[i]);
+                   //inputPaths.Add(fileSelect.FileNames[i]);
+               }
+               // load paths to textBox
+               // fileList.Items.Add(result);
+               //textBoxFiles.Text = result;
+           }
+            */
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -300,30 +257,30 @@ namespace FFMPEG_Wrapper
 
         private void comboBoxACodec_SelectedIndexChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            Enum.TryParse(comboBoxACodec.SelectedValue.ToString(), out selectedACodec);
-             */
+            /* UI REBUILD
+           Enum.TryParse(comboBoxACodec.SelectedValue.ToString(), out selectedACodec);
+            */
         }
 
         private void comboExtention_SelectedIndexChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            Enum.TryParse(comboExtention.SelectedValue.ToString(), out selectedExtension);
-             */
+            /* UI REBUILD
+           Enum.TryParse(comboExtention.SelectedValue.ToString(), out selectedExtension);
+            */
         }
 
         private void checkWidth_CheckedChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            numericWidth.Enabled = checkWidth.Checked;
-             */
+            /* UI REBUILD
+           numericWidth.Enabled = checkWidth.Checked;
+            */
         }
 
         private void checkHeight_CheckedChanged(object sender, EventArgs e)
         {
-             /* UI REBUILD
-            numericHeight.Enabled = checkHeight.Checked;
-             */
+            /* UI REBUILD
+           numericHeight.Enabled = checkHeight.Checked;
+            */
         }
 
         int GetTargetHeight()
@@ -349,7 +306,7 @@ namespace FFMPEG_Wrapper
         //open file dialog to open ffmpeg
         private void selectFFMPEGButton_Click(object sender, EventArgs e)
         {
-            bool resquestResult = config.RequestFFMPEG();
+            bool resquestResult = Config.Instance.RequestFFMPEG();
             /* UI REBUILD
             selectFFMPEGButton.Enabled = !resquestResult;
             */
