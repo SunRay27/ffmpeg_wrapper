@@ -5,33 +5,32 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 public static class XMLSerializer
 {
-    private static string savePath = AppDomain.CurrentDomain.BaseDirectory;
-    private static string workingFolder = AppDomain.CurrentDomain.BaseDirectory;
-    private static string tempFolder = workingFolder + @"\temp";
+    private static string savePath = Application.StartupPath + @"\temp";
     public static void Save<T>(string fileName, T objToSerialize)
     {
         XmlSerializer xml = new XmlSerializer(typeof(T));
 
-        using (FileStream stream = new FileStream(tempFolder + $"\\{fileName}.xml", FileMode.Create))
+        using (FileStream stream = new FileStream(savePath + $"\\{fileName}.xml", FileMode.Create))
             xml.Serialize(stream, objToSerialize);
     }
     public static bool Exist(string fileName)
     {
-        return File.Exists(tempFolder + $"\\{fileName}.xml");
+        return File.Exists(savePath + $"\\{fileName}.xml");
     }
     public static T Load<T>(string fileName)
     {
         
-        if (File.Exists(tempFolder + $"\\{fileName}.xml"))
+        if (File.Exists(savePath + $"\\{fileName}.xml"))
         {
             T res;
             XmlSerializer xml = new XmlSerializer(typeof(T));
 
-            using (FileStream stream = new FileStream(tempFolder + $"\\{fileName}.xml", FileMode.Open))
+            using (FileStream stream = new FileStream(savePath + $"\\{fileName}.xml", FileMode.Open))
                 res = (T)xml.Deserialize(stream);
 
             return res;

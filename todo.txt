@@ -7,6 +7,9 @@
 7.settingsWindow on first start (if something is missing) + move different checks logic to this window
 8.open output folder + open folder with file (or open folder with file after reencoding process) 
 9.auto naming by codec
-10.ask if filename of new video already exists?
++++10.ask if filename of new video already exists?
 11.get original video dimesions??
 12.localization
+13.reencoding presets + user presets
+14. queue for file reencoding
+15. individual reencoding settings for files

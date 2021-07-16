@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FFMPEG_Overlay.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -215,6 +216,7 @@ namespace FFMPEG_Overlay
                 else
                 {
                     worker.abortButton_Click(this, null);
+                    worker.Close();
                     return;
                 }
             }

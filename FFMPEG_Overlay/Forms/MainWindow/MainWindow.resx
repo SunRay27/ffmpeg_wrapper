@@ -118,26 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="buttonStart.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABEAAAAWCAYAAAAmaHdCAAAABGdBTUEAALGeYUxB9wAAACBjSFJNAACH
-        EAAAjBIAAP1NAACBPgAAWesAARIPAAA85gAAGc66ySIyAAABJmlDQ1BBZG9iZSBSR0IgKDE5OTgpAAAo
-        z2NgYDJwdHFyZRJgYMjNKykKcndSiIiMUmA/z8DGwMwABonJxQWOAQE+IHZefl4qAwb4do2BEURf1gWZ
-        xUAa4EouKCoB0n+A2CgltTiZgYHRAMjOLi8pAIozzgGyRZKywewNIHZRSJAzkH0EyOZLh7CvgNhJEPYT
-        ELsI6Akg+wtIfTqYzcQBNgfClgGxS1IrQPYyOOcXVBZlpmeUKBhaWloqOKbkJ6UqBFcWl6TmFit45iXn
-        FxXkFyWWpKYA1ULcBwaCEIWgENMAarTQZKAyAMUDhPU5EBy+jGJnEGIIkFxaVAZlMjIZE+YjzJgjwcDg
-        v5SBgeUPQsykl4FhgQ4DA/9UhJiaIQODgD4Dw745AMDGT/0ZOjZcAAAACXBIWXMAAAsTAAALEwEAmpwY
-        AAABOklEQVQ4T53UsStFYRzG8WtSJAuLTTaLwUApi40oRVlNYmSimMzKX2CxGRQlpRT/gVGxSIpMGIg6
-        vs85Pafjfc+557pPfZ7uec/v/U333kaSJFvohj63RaXcYQrRQCtU73D20YVosBmVlnzBecAMouEqKkWL
-        xnCePmU5wgCiSyGV48M1/OiAvGEZ+YUyKqcXfjGEUzhnGEZ+sUjl9CAcWMIrnHWEM7VLpB+HcK4xjnxG
-        5VQtsWncw9lF+k7l1C2xbTiPmNOh086SZ8zr0KlbsognODtI36mcqiWDOIZziVHkMyqnbMkKPqF8YxXh
-        zJ8lxS/bCC7gnEBfwPxikcrx4Wb6lOUFC8gvlFEp+o1M4ip9ynKAPkSXQqrwr+AWs4iGq6g+4OyhE9Fg
-        MyrlBhOIBlqh2kBH8fB/ksYvM3zEcMNKprgAAAAASUVORK5CYII=
-</value>
-  </data>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="imageLogo.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGeYUxB9wAAACBjSFJNAACH
