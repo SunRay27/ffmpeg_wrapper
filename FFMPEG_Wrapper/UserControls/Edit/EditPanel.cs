@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 
-namespace FFMPEG_Wrapper.Forms.MainWindow
+
+namespace FFMPEG_Wrapper.UserControls
 {
     public partial class EditPanel : UserControl
     {

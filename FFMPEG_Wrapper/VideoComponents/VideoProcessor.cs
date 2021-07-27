@@ -1,16 +1,72 @@
-﻿using System;
+﻿using FFMPEG_Wrapper.Forms.MainWindow;
+using System;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
+using static FFMPEG_Wrapper.VideoProcessor.EncodeParameters;
 
 namespace FFMPEG_Wrapper
 {
     public class VideoProcessor
     {
+
         public enum VideoCodec { H264, H264_amd, H264_nvenc, H264_intel_qsv, H265, H265_nvenc, H265_amd, H265_intel_qsv, VP8, VP9, Copy };
         public enum AudioCodec { Copy, Vorbis, WavPack, MP3, Remove };
         public enum Preset { none, ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow };
         public enum OutExtension { mp4, mkv };
+
+        public class EncodeParameters
+        {
+             string inputPath = "";
+             string outputFolder = "";
+             string outputName = "";
+             string outputPath = "";
+             float bitrate = -1;
+             int width = -2;
+             int height = -2;
+             bool horizontalFlip = false;
+             bool verticalFlip = false;
+
+             VideoCodec videoCodec = VideoCodec.Copy;
+             AudioCodec audioCodec = AudioCodec.Copy;
+             Preset preset = Preset.medium;
+             OutExtension extention = OutExtension.mp4;
+
+
+            public string InputPath => inputPath;
+            public string OutputFolder => outputFolder;
+            public string OutputName => outputName;
+            public string OutputPath => outputPath;
+            public float Bitrate => bitrate;
+            public int Width => width;
+            public int Height => height;
+            public bool HorizontalFlip => horizontalFlip;
+            public bool VerticalFlip => verticalFlip;
+            public VideoCodec VideoCodec => videoCodec;
+            public AudioCodec AudioCodec => audioCodec;
+            public Preset Preset => preset;
+            public OutExtension Extension => extention;
+
+
+            public EncodeParameters(string inputPath, string outputFolder, string outputName, VideoCodec videoCodec, AudioCodec audioCodec, Preset preset, OutExtension extention, float bitrate, int width, int heigh, bool horizontalFlip, bool verticalFlip)
+            {
+                this.inputPath = inputPath;
+                this.outputFolder = outputFolder;
+                this.outputName = outputName;
+                this.videoCodec = videoCodec;
+                this.audioCodec = audioCodec;
+                this.preset = preset;
+                this.extention = extention;
+                this.bitrate = bitrate;
+                this.width = width;
+                this.height = heigh;
+                this.horizontalFlip = horizontalFlip;
+                this.verticalFlip = verticalFlip;
+
+                this.outputPath = $@"{outputFolder}\{outputName}.{extention}";
+            }
+        }
+
 
         //in kb/s
         float bitRate = 0;
@@ -135,6 +191,32 @@ namespace FFMPEG_Wrapper
 
             System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
         }
+        public VideoProcessor(EncodeParameters parameters)
+        {
+            this.inputPath = parameters.InputPath;
+            this.outputPath = parameters.OutputPath;
+            this.bitRate = parameters.Bitrate;
+            this.targetHeight = parameters.Height;
+            this.targetWidth = parameters.Width;
+            this.ffmpegPath = Config.Instance.FFMPEGPath;
+            
+
+            if (parameters.HorizontalFlip && parameters.VerticalFlip)
+                flipAddon = "hflip,vflip,";
+            else if (parameters.HorizontalFlip)
+                flipAddon = "hflip,";
+            else if (parameters.VerticalFlip)
+                flipAddon = "vflip,";
+
+            SetVideoCodecToString(parameters.VideoCodec);
+            SetAudioCodecToString(parameters.AudioCodec);
+            SetPresetToString(parameters.Preset);
+
+            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+        }
 
 
         public void StartProcessing()
@@ -142,11 +224,16 @@ namespace FFMPEG_Wrapper
             string command = $"-i \"{inputPath}\" -c:v {videoCodec}";
             if (flipAddon == string.Empty && targetWidth == -2 && targetHeight == -2)
             {
+                if(bitRate>0)
                 command += $" -b:v {bitRate}M";
+
             }
             else
             {
-                command += $" -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M";
+                if (bitRate > 0)
+                    command += $" -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\" -b:v {bitRate}M";
+                else
+                    command += $" -vf \"{flipAddon}scale={targetWidth}:{targetHeight}\"";
             }
 
             if (preset == "none")

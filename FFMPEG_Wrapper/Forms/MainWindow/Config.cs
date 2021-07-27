@@ -10,7 +10,7 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
     public class Config
     {
         public static string ConfigFileName { get; } = "config";
-        public string SaveFolder { get { return savePath; } set { savePath = value; } }
+        //public string SaveFolder { get { return savePath; } set { savePath = value; } }
         public string FFMPEGPath { get { return ffmpegPath; } set { ffmpegPath = value; } }
         public string FFPROBEPath { get { return ffprobePath; } set { ffprobePath = value; } }
 
@@ -19,21 +19,18 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
         private static Config instance;
 
 
-        private string savePath = String.Empty;
+        //private string savePath = String.Empty;
         private string ffmpegPath = String.Empty;
         private string ffprobePath = String.Empty;
 
-        public bool SaveFolderValid
-        {
-            get { return Directory.Exists(savePath); }
-        }
+
         public bool FFMPEGPathValid
         {
             get { return IsFFMPEGPathValid(ffmpegPath); }
         }
         public bool FFPROBEPathValid
         {
-            get { return IsFFMPEGPathValid(ffmpegPath); }
+            get { return IsFFPROBEPathValid(ffprobePath); }
         }
 
         public Config()
@@ -44,6 +41,10 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 throw new Exception("Config instance alread y exists!!!");
         }
 
+        public void Load()
+        {
+            AllPathsExist();
+        }
         //called if config file doesn't exist
         public void Init()
         {
@@ -60,18 +61,21 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 ffprobePath = possiblePath2;
 
             XMLSerializer.Save("config", instance);
+
+            Load();
         }
         public bool AllPathsExist()
         {
             bool result = true;
-            if (!SaveFolderValid)
-            {
-                MessageBox.Show($"Не выбрана папка для вывода", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                result = false;
-            }
+
             if (!FFMPEGPathValid)
             {
                 MessageBox.Show($"Не выбран ffmpeg.exe", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                result = false;
+            }
+            if (!FFPROBEPathValid)
+            {
+                MessageBox.Show($"Не выбран ffprobe.exe", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 result = false;
             }
             return result;
@@ -82,12 +86,13 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
             OpenFileDialog fileSelect = new OpenFileDialog();
             fileSelect.Multiselect = false;
 
-            fileSelect.Filter = "ffmpeg.exe |*.exe;";
+            fileSelect.Filter = "ffmpeg |*.exe;";
             if (fileSelect.ShowDialog() == DialogResult.OK)
             {
-                ffmpegPath = fileSelect.FileName;
-                if (FFMPEGPathValid)
+
+                if (IsFFMPEGPathValid(fileSelect.FileName))
                 {
+                    ffmpegPath = fileSelect.FileName;
                     XMLSerializer.Save(Config.ConfigFileName, this);
                     return true;
                 }
@@ -107,44 +112,66 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 return false;
         }
 
-        public bool RequestSaveFolder()
+        public bool RequestFFPROBE()
         {
-            FolderBrowserDialog saveFile = new FolderBrowserDialog();
+            OpenFileDialog fileSelect = new OpenFileDialog();
+            fileSelect.Multiselect = false;
 
-            if (saveFile.ShowDialog() == DialogResult.OK)
+            fileSelect.Filter = "ffprobe |*.exe;";
+            if (fileSelect.ShowDialog() == DialogResult.OK)
             {
-                savePath = saveFile.SelectedPath;
 
-                if (SaveFolderValid)
+                if (IsFFPROBEPathValid(fileSelect.FileName))
                 {
+                    ffprobePath = fileSelect.FileName;
                     XMLSerializer.Save(Config.ConfigFileName, this);
                     return true;
                 }
                 else
                 {
                     bool retryResult = false;
-                    var Result = MessageBox.Show($"Некорректный путь - содержит кириллицу", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+
+                    var Result = MessageBox.Show($"Файл не прошёл проверку: может это не ffprobe?", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+
                     if (Result == DialogResult.Retry)
-                        retryResult = RequestSaveFolder();
+                        retryResult = RequestFFPROBE();
+
                     return retryResult;
                 }
-
             }
             else
                 return false;
+        }
+
+        public bool RequestFolder(out string path)
+        {
+            FolderBrowserDialog saveFile = new FolderBrowserDialog();
+
+            if (saveFile.ShowDialog() == DialogResult.OK)
+            {
+                path = saveFile.SelectedPath;
+                return true;
+
+            }
+            else
+            {
+                path = "";
+                return false;
+            }
         }
 
 
         bool IsFFMPEGPathValid(string ffmpegPath)
         {
             bool result = false;
-
-            if (ffmpegPath.Contains("ffmpeg.exe"))
-            {
-                string message = CommandRunner.RunCommand(ffmpegPath, "");
-                if (message.Contains("ffmpeg version"))
-                    result = true;
-            }
+            if(File.Exists(ffmpegPath))
+           // if (Directory.Exists(ffmpegPath.Replace("\\ffmpeg.exe", "")))
+                //if (ffmpegPath.Contains("ffmpeg.exe"))
+                {
+                    string message = CommandRunner.RunCommand(ffmpegPath, "");
+                    if (message.Contains("ffmpeg version"))
+                        result = true;
+                }
 
 
             return result;
@@ -153,14 +180,15 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
         bool IsFFPROBEPathValid(string ffprobePath)
         {
             bool result = false;
+            if (File.Exists(ffprobePath))
+               // if (Directory.Exists(ffprobePath.Replace("\\ffprobe.exe", "")))
+               // if (ffprobePath.Contains("ffprobe.exe"))
+                {
+                    string message = CommandRunner.RunCommand(ffprobePath, "");
 
-            if (ffprobePath.Contains("ffprobe.exe"))
-            {
-                string message = CommandRunner.RunCommand(ffprobePath, "");
-
-                if (message.Contains("ffprobe version"))
-                    result = true;
-            }
+                    if (message.Contains("ffprobe version"))
+                        result = true;
+                }
 
 
             return result;

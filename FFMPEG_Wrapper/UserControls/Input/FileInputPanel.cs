@@ -1,4 +1,5 @@
 ﻿using FFMPEG_Wrapper.Forms.MainWindow;
+using FFMPEG_Wrapper.UtilityComponents;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +11,7 @@ namespace FFMPEG_Wrapper.UserControls
     {
         //TODO: move this shit out of here!!!!
         static string[] mediaExtensions = {
-        ".MP4", ".MKV", ".AVI", ".MPEG", ".FLV", ".WMV"
+        ".MP4", ".MKV", ".AVI", ".MPEG", ".FLV", ".WMV", ".MOV"
         };
 
         static bool IsMediaFile(string path)
@@ -21,24 +22,37 @@ namespace FFMPEG_Wrapper.UserControls
         public FileInputPanel()
         {
             InitializeComponent();
-            ShowDropPanel(true);
+
+            
+
+            ShowFileTablePanel(true);
+
+            dropPanel.BorderColor = buttonBrowse.BackColor = Constants.ThemeColor;
+            
         }
+
+
 
         private void dropPanel_DragDrop(object sender, DragEventArgs e)
         {
-            ShowDropPanel(false);
+            
 
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
+            WriteFiles(new List<string>(files));
 
-            //check files for duplication
-            List<string> filePaths = new List<string>(files);
+        }
+        public void WriteFiles(List<string> filePaths)
+        {
+            //so we have some files in panel, show panel with videos
+            ShowFileTablePanel(false);
 
+            // check for duplication
             for (int i = 0; i < FileManager.Instance.CurrentFiles.Count; i++)
             {
                 for (int j = 0; j < filePaths.Count; j++)
                 {
-                    if (filePaths[j] == FileManager.Instance.CurrentFiles[i].filePath)
+                    if (filePaths[j] == FileManager.Instance.CurrentFiles[i].GetFilePath())
                     {
                         filePaths.RemoveAt(j);
                         i = 0;
@@ -58,15 +72,21 @@ namespace FFMPEG_Wrapper.UserControls
 
 
             FileManager.Instance.ProcessInputFiles(filePaths, templates);
-            /*
-            string debugOutput = "";
-            foreach (var file in files)
+        }
+        public void RequestInputFiles()
+        {
+
+            OpenFileDialog fileSelect = new OpenFileDialog();
+            fileSelect.Multiselect = true;
+            fileSelect.Filter = "Video files (*.mp4, *.mkv, *.avi *.mpeg *.flv *.wmv *.mov) | *.mp4; *.mkv; *.avi; *.mpeg; *.flv; *.wmv; *.mov";
+
+            //inputPaths = new List<string>();
+            if (fileSelect.ShowDialog() == DialogResult.OK)
             {
-                debugOutput += file + "\n";
+                List<string> filePaths = new List<string>(fileSelect.FileNames);
+                WriteFiles(filePaths);
             }
 
-            MessageBox.Show(debugOutput);
-            */
         }
 
         private void dropPanel_DragEnter(object sender, DragEventArgs e)
@@ -87,7 +107,7 @@ namespace FFMPEG_Wrapper.UserControls
             if (!wrongFile)
             {
                 e.Effect = DragDropEffects.Copy;
-                ShowDropPanel(true);
+                ShowFileTablePanel(true);
             }
             else
                 dropPanel_DragLeave(this, null);
@@ -95,10 +115,11 @@ namespace FFMPEG_Wrapper.UserControls
 
         private void dropPanel_DragLeave(object sender, System.EventArgs e)
         {
-            ShowDropPanel(false);
+            if (fileTable.Controls.Count != 0)
+                ShowFileTablePanel(false);
         }
 
-        void ShowDropPanel(bool newVal)
+        void ShowFileTablePanel(bool newVal)
         {
             fileTable.Visible = !newVal;
             fileTable.Enabled = !newVal;
@@ -107,7 +128,12 @@ namespace FFMPEG_Wrapper.UserControls
         private void fileTable_ControlRemoved(object sender, ControlEventArgs e)
         {
             if (fileTable.Controls.Count == 0)
-                ShowDropPanel(true);
+                ShowFileTablePanel(true);
+        }
+
+        private void buttonBrowse_Click(object sender, EventArgs e)
+        {
+            RequestInputFiles();
         }
     }
 }

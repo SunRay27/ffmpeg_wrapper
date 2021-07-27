@@ -96,7 +96,7 @@ namespace FFMPEG_Wrapper.Forms.FormUtils
         #region Methods
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            try
+            //try
             {
                 base.OnPaint(pevent);
                 pevent.Graphics.Clear(BackColor);
@@ -135,7 +135,7 @@ namespace FFMPEG_Wrapper.Forms.FormUtils
                 }
                 pevent.Dispose();
             }
-            catch (Exception ex)
+            //catch (Exception ex)
             {
 
             }

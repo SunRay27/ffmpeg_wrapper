@@ -28,7 +28,7 @@ namespace FFMPEG_Wrapper.UserControls
         public InputVideoTemplate()
         {
             InitializeComponent();
-            UpdateBorderColor(Selected);
+            //UpdateBorderColor(Selected);
 
         }
 
@@ -38,14 +38,15 @@ namespace FFMPEG_Wrapper.UserControls
         }
         private void checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateBorderColor(Selected);
+            //UpdateBorderColor(Selected);
+            inputFile.Selected = checkBox.Checked;
         }
         public void ApplyFileInfo(FileManager.InputFile inputFile)
         {
             this.inputFile = inputFile;
-            this.fileName.Text = inputFile.fileName;
-            this.fileFormat.Text = $"{inputFile.width}x{inputFile.height} .{inputFile.extension}";
-            preview.BackgroundImage = Image.FromFile(inputFile.previewPath);
+            this.fileName.Text = inputFile.GetFileName();
+            this.fileFormat.Text = $"{inputFile.GetFileWidth()}x{inputFile.GetFileHeight()} {inputFile.GetFileBitrate()}kbit/s .{inputFile.GetFileExtention()}";
+            preview.BackgroundImage = Image.FromFile(inputFile.GetFilePreviewPath());
         }
 
         private void buttonRemove_Click(object sender, EventArgs e)

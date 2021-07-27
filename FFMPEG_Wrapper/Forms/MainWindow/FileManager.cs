@@ -14,13 +14,13 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
     {
         public class InputFile
         {
-            public string filePath;
-            public string fileName;
-            public string extension;
-            public int width, height;
-            public EncodeParameters encodeParameters;
-            public InputVideoTemplate holder;
-            public string previewPath;
+            string filePath;
+            string fileName;
+            string extension;
+            int width, height, bitrate;
+            InputVideoTemplate holder;
+            string previewPath;
+            bool selected;
 
             public InputFile(string path, InputVideoTemplate holder)
             {
@@ -35,7 +35,17 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 //set holder link
                 this.holder = holder;
                 holder.ApplyFileInfo(this);
+                selected = false;
             }
+
+            public string GetFilePath() {return filePath;}
+            public string GetFileName() {return fileName; }
+            public string GetFileExtention() {return extension; }
+            public string GetFilePreviewPath() {return previewPath; }
+            public int GetFileWidth() { return width; }
+            public int GetFileHeight() { return height; }
+            public int GetFileBitrate() { return bitrate; }
+            public bool Selected { get{ return selected; } set{ selected = value; } }
 
             void ExtractImage()
             {
@@ -68,13 +78,20 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
             }
             void ExtractDimensions()
             {
+
+                // get width/height
                 string command = $"-v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 \"{filePath}\"";
-
                 string dimensions = CommandRunner.RunCommand(Config.Instance.FFPROBEPath, command);
-
 
                 width = Convert.ToInt32(dimensions.Split('x')[0]);
                 height = Convert.ToInt32(dimensions.Split('x')[1]);
+
+                //get bitrate
+                string command2 = $"-v error -select_streams v:0 -show_entries stream=width,height,duration,bit_rate -of default=noprint_wrappers=1 \"{filePath}\"";
+                string bitrate = CommandRunner.RunCommand(Config.Instance.FFPROBEPath, command2);
+
+                //MessageBox.Show(bitrate);
+                this.bitrate = Convert.ToInt32(bitrate.Split('\n')[3].Split('=')[1])/1024;
             }
             ~InputFile()
             {
@@ -90,12 +107,9 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
 
             }
         }
-        public class EncodeParameters
-        {
-
-        }
         public static string TempFolderPath { get; } = Application.StartupPath + "\\temp\\";
         public static string PreviewFolderPath { get; } = Application.StartupPath + "\\temp\\preview\\";
+        public static string DefaultSavePath { get; } = Application.StartupPath + "\\output\\";
         
         public static FileManager Instance { get { return instance; } }
         private static FileManager instance;
@@ -125,6 +139,9 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
             if (!Directory.Exists(PreviewFolderPath))
                 Directory.CreateDirectory(PreviewFolderPath);
 
+            if (!Directory.Exists(DefaultSavePath))
+                Directory.CreateDirectory(DefaultSavePath);
+
             //delete all previews from temp folder if they exist (AND THEY CAN EXIST!!!)
             List<string> images = new List<string>(Directory.GetFiles(PreviewFolderPath, "*.jpg"));
             if (images.Count > 0)
@@ -140,6 +157,9 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 currentFiles.Add(newFile);
             }
         }
+
+
+
         public void RemoveFile(InputFile toDelete)
         {
             currentFiles.Remove(toDelete);

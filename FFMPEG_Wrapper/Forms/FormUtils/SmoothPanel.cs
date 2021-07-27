@@ -9,8 +9,10 @@ namespace FFMPEG_Wrapper.Forms.FormUtils
     {
 
         #region variables
-        private int _offsetX = 12;
-        private int _offsetY = 12;
+        private int _offsetXTop = 12;
+        private int _offsetXBottom = 12;
+        private int _offsetYTop = 12;
+        private int _offsetYBottom = 12;
         private float _borderWidth = 0.5f;
         private int _borderRadius = 10;
         private Color _borderColor = Color.Black;
@@ -19,15 +21,25 @@ namespace FFMPEG_Wrapper.Forms.FormUtils
         #endregion
 
         #region Properties
-        public int OffsetX
+        public int OffsetXTop
         {
-            get { return _offsetX; }
-            set { _offsetX = value; Invalidate(); }
+            get { return _offsetXTop; }
+            set { _offsetXTop = value; Invalidate(); }
         }
-        public int OffsetY
+        public int OffsetXBottom
         {
-            get { return _offsetY; }
-            set { _offsetY = value; Invalidate(); }
+            get { return _offsetXBottom; }
+            set { _offsetXBottom = value; Invalidate(); }
+        }
+        public int OffsetYTop
+        {
+            get { return _offsetYTop; }
+            set { _offsetYTop = value; Invalidate(); }
+        }
+        public int OffsetYBottom
+        {
+            get { return _offsetYBottom; }
+            set { _offsetYBottom = value; Invalidate(); }
         }
         public float BorderWidth
         {
@@ -57,8 +69,8 @@ namespace FFMPEG_Wrapper.Forms.FormUtils
             //g.FillRoundedRectangle(new SolidBrush(Color.White), 10, 10, this.Width - 40, this.Height - 60, 10);
             // SolidBrush brush = new SolidBrush(Color.White);
             // g.FillRoundedRectangle(brush, 12, 12, this.Width - 44, this.Height - 64, 10);
-            g.FillRoundedRectangle(new SolidBrush(_fillColor), _offsetX, _offsetY, this.Width - (_offsetX * 2), this.Height - (_offsetY * 2), _borderRadius);
-            g.DrawRoundedRectangle(new Pen(_borderColor, _borderWidth), _offsetX, _offsetY, this.Width - (_offsetX * 2), this.Height - (_offsetY * 2), _borderRadius);
+            g.FillRoundedRectangle(new SolidBrush(_fillColor), _offsetXTop, _offsetYTop, this.Width - (_offsetXTop + _offsetXBottom), this.Height - (_offsetYTop + _offsetYBottom), _borderRadius);
+            g.DrawRoundedRectangle(new Pen(_borderColor, _borderWidth), _offsetXTop, _offsetYTop, this.Width - (_offsetXTop + _offsetXBottom), this.Height - (_offsetYTop + _offsetYBottom), _borderRadius);
         }
         protected override void OnResize(EventArgs eventargs)
         {

@@ -11,7 +11,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <Deterministic>false</Deterministic>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -48,16 +48,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>FFMPEG_Wrapper.StartPoint</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,7 +66,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -77,31 +76,83 @@
     <Compile Include="Forms\FormUtils\BigCheckBox.Designer.cs">
       <DependentUpon>BigCheckBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormUtils\CustomNumeric.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\FormUtils\CustomProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\FormUtils\CustomTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FormUtils\CustomTextBox.Designer.cs">
+      <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormUtils\GraphicsExtentions.cs" />
+    <Compile Include="Forms\FormUtils\RoundedComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Forms\FormUtils\SmoothPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\FormUtils\ToggleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\MainWindow\Config.cs" />
-    <Compile Include="Forms\MainWindow\EditPanel.cs">
+    <Compile Include="UserControls\About\AboutPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\MainWindow\EditPanel.Designer.cs">
+    <Compile Include="UserControls\About\AboutPanel.Designer.cs">
+      <DependentUpon>AboutPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Edit\EditPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Edit\EditPanel.Designer.cs">
       <DependentUpon>EditPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainWindow\FileManager.cs" />
-    <Compile Include="UserControls\FileInputPanel.cs">
+    <Compile Include="UserControls\Input\FileInputPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\FileInputPanel.Designer.cs">
+    <Compile Include="UserControls\Input\FileInputPanel.Designer.cs">
       <DependentUpon>FileInputPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\InputVideoTemplate.cs">
+    <Compile Include="UserControls\Input\InputVideoTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\InputVideoTemplate.Designer.cs">
+    <Compile Include="UserControls\Input\InputVideoTemplate.Designer.cs">
       <DependentUpon>InputVideoTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MainWindow\LeftPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\MainWindow\LeftPanel.Designer.cs">
+      <DependentUpon>LeftPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MainWindow\TopPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\MainWindow\TopPanel.Designer.cs">
+      <DependentUpon>TopPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Output\OutputPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Output\OutputPanel.Designer.cs">
+      <DependentUpon>OutputPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormUtils\RJButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControls\Settings\SettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Settings\SettingsPanel.Designer.cs">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityComponents\CommandRunner.cs" />
+    <Compile Include="UtilityComponents\Constants.cs" />
     <Compile Include="UtilityComponents\XMLSerializer.cs" />
     <Compile Include="Forms\MainWindow\MainWindow.cs">
       <SubType>Form</SubType>
@@ -120,7 +171,13 @@
     <Compile Include="Forms\Worker\Worker.Designer.cs">
       <DependentUpon>Worker.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\MainWindow\EditPanel.resx">
+    <EmbeddedResource Include="Forms\FormUtils\CustomTextBox.resx">
+      <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\About\AboutPanel.resx">
+      <DependentUpon>AboutPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Edit\EditPanel.resx">
       <DependentUpon>EditPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainWindow\MainWindow.resx">
@@ -138,13 +195,26 @@
     <EmbeddedResource Include="Forms\Worker\Worker.resx">
       <DependentUpon>Worker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\FileInputPanel.resx">
+    <EmbeddedResource Include="UserControls\Input\FileInputPanel.resx">
       <DependentUpon>FileInputPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\InputVideoTemplate.resx">
+    <EmbeddedResource Include="UserControls\Input\InputVideoTemplate.resx">
       <DependentUpon>InputVideoTemplate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\MainWindow\LeftPanel.resx">
+      <DependentUpon>LeftPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\MainWindow\TopPanel.resx">
+      <DependentUpon>TopPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Output\OutputPanel.resx">
+      <DependentUpon>OutputPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Settings\SettingsPanel.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\VideoProcessor.AudioCodec.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -164,6 +234,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
