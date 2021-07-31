@@ -15,19 +15,19 @@ namespace FFMPEG_Wrapper
         {
             FileManager manager = new FileManager();
 
+            Config config;
             //not first start...
             if (XMLSerializer.Exist(Config.ConfigFileName))
             {
-                Config config = XMLSerializer.Load<Config>(Config.ConfigFileName);
-                config.Load();
+                config = XMLSerializer.Load<Config>(Config.ConfigFileName);
             }
             else
             {
-                Config config = new Config();
-                config.Init();
+                config = new Config();
+                
             }
-            
 
+            config.Load();
             System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
 

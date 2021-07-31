@@ -11,7 +11,7 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
     {
         public static string ConfigFileName { get; } = "config";
         //public string SaveFolder { get { return savePath; } set { savePath = value; } }
-        public string FFMPEGPath { get { return ffmpegPath; } set { ffmpegPath = value; } }
+        public string FFMPEGPath { get { return ffmpegPath; } set { ffmpegPath = value;  } }
         public string FFPROBEPath { get { return ffprobePath; } set { ffprobePath = value; } }
 
 
@@ -36,33 +36,43 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
         public Config()
         {
             if (instance == null)
+            {
                 instance = this;
+            }
             else
-                throw new Exception("Config instance alread y exists!!!");
+                throw new Exception("Config instance already exists!!!");
         }
 
         public void Load()
         {
+           // if(!AllPathsExist())
+            {
+                TryFindExe();
+            }
             AllPathsExist();
         }
-        //called if config file doesn't exist
-        public void Init()
+
+        void TryFindExe()
         {
             // try to find ffmpeg in root folder
             string possiblePath = $"{Application.StartupPath}\\ffmpeg.exe";
 
             if (IsFFMPEGPathValid(possiblePath))
-                ffmpegPath = possiblePath;
+            {
+                FFMPEGPath = possiblePath;
+                XMLSerializer.Save("config", this);
+            }
 
             // try to find ffprobe in root folder
             string possiblePath2 = $"{Application.StartupPath}\\ffprobe.exe";
 
             if (IsFFPROBEPathValid(possiblePath2))
-                ffprobePath = possiblePath2;
+            {
+                FFPROBEPath = possiblePath2;
+                XMLSerializer.Save("config", this);
+            }
 
-            XMLSerializer.Save("config", instance);
-
-            Load();
+            //
         }
         public bool AllPathsExist()
         {
@@ -93,7 +103,7 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 if (IsFFMPEGPathValid(fileSelect.FileName))
                 {
                     ffmpegPath = fileSelect.FileName;
-                    XMLSerializer.Save(Config.ConfigFileName, this);
+                    XMLSerializer.Save("config", this);
                     return true;
                 }
                 else
@@ -124,7 +134,7 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 if (IsFFPROBEPathValid(fileSelect.FileName))
                 {
                     ffprobePath = fileSelect.FileName;
-                    XMLSerializer.Save(Config.ConfigFileName, this);
+                    XMLSerializer.Save("config", this);
                     return true;
                 }
                 else
