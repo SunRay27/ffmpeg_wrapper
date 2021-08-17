@@ -1,4 +1,5 @@
-﻿using FFMPEG_Wrapper.UserControls.About;
+﻿using FFMPEG_Wrapper.Forms.MainWindow;
+using FFMPEG_Wrapper.UserControls.About;
 using FFMPEG_Wrapper.UserControls.MainWindow;
 using FFMPEG_Wrapper.UserControls.Output;
 using FFMPEG_Wrapper.UserControls.Settings;
@@ -90,8 +91,14 @@ namespace FFMPEG_Wrapper.UserControls
         }
 
 
+
         private void buttonInput_Click(object sender, EventArgs e)
         {
+            if(!Config.Instance.FFMPEGPathValid || !Config.Instance.FFPROBEPathValid)
+            {
+                MessageBox.Show("Select ffmpeg.exe and ffprobe.exe first", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if(MoveSelector((Button)sender))
             {
                 DeactivateAllUserControls();
@@ -110,6 +117,12 @@ namespace FFMPEG_Wrapper.UserControls
 
         private void buttonOutput_Click(object sender, EventArgs e)
         {
+            if (!Config.Instance.FFMPEGPathValid || !Config.Instance.FFPROBEPathValid)
+            {
+                MessageBox.Show("Select ffmpeg.exe and ffprobe.exe first", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (MoveSelector((Button)sender))
             {
                 DeactivateAllUserControls();
@@ -143,5 +156,8 @@ namespace FFMPEG_Wrapper.UserControls
         {
             UpdateSelector();
         }
+
+
+       
     }
 }

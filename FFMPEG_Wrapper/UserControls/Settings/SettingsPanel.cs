@@ -48,6 +48,8 @@ namespace FFMPEG_Wrapper.UserControls.Settings
                 ffprobePathLabel.Text = "???";
                 ffprobePathLabel.ForeColor = Constants.ThemeColor;
             }
+
+           
         }
         private void selectffmpegButton_Click(object sender, EventArgs e)
         {

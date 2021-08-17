@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace FFMPEG_Wrapper.Forms.MainWindow
@@ -49,20 +50,28 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
 
             void ExtractImage()
             {
+                //command += $" -vf \"{flipAddon} scale={targetWidth}:{targetHeight}:force_original_aspect_ratio=decrease,pad={targetWidth}:{targetHeight}:(ow-iw)/2:(oh-ih)/2\"";
+
+                /*
                 //get video preview
                 string framePath = $"{PreviewFolderPath}temp.jpg";
-                string frameArgs = $"-i \"{filePath}\" -vf \"select=eq(n\\,{0})\" -vframes 1 {framePath}";
+                string frameArgs = $"-i \"{filePath}\" -vf \"select=eq(n\\,{0})\" -vframes 1 \"{framePath}\"";
                 CommandRunner.RunCommand(Config.Instance.FFMPEGPath, frameArgs);
 
                 //scale=-1:108 ---->  -1 means autoSize, 108 - image height
                 string resizedPath = $"{PreviewFolderPath}{Guid.NewGuid()}.jpg";
-                string resizeArgs = $"-i \"{framePath}\" -vf scale=192:-1 {resizedPath}";
-                CommandRunner.RunCommand(Config.Instance.FFMPEGPath, resizeArgs);
+                string resizeArgs = $"-i \"{framePath}\" -vf \"scale=192:108:force_original_aspect_ratio=decrease,pad=192:108:(ow-iw)/2:(oh-ih)/2\" \"{resizedPath}\"";
+                MessageBox.Show(CommandRunner.RunCommand(Config.Instance.FFMPEGPath, resizeArgs));
 
                 previewPath = resizedPath;
+                File.Delete(framePath);
+                */
+                previewPath = $"{PreviewFolderPath}{Guid.NewGuid()}.jpg";
+                string frameArgs = $"-i \"{filePath}\" -vf \"select=eq(n\\,{0}),scale=192:108:force_original_aspect_ratio=decrease,pad=192:108:(ow-iw)/2:(oh-ih)/2\" -vframes 1 \"{previewPath}\"";
+                CommandRunner.RunCommand(Config.Instance.FFMPEGPath, frameArgs);
 
                 //delete initial frame
-                File.Delete(framePath);
+                
 
             }
             void ExtractNames()
@@ -91,7 +100,19 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 string bitrate = CommandRunner.RunCommand(Config.Instance.FFPROBEPath, command2);
 
                 //MessageBox.Show(bitrate);
-                this.bitrate = Convert.ToInt32(bitrate.Split('\n')[3].Split('=')[1])/1024;
+                
+                string bitrateString = bitrate.Split('\n')[3].Split('=')[1];
+
+                //MessageBox.Show(bitrate);
+                try
+                {
+                    this.bitrate = Convert.ToInt32(bitrateString) / 1024;
+                }
+                catch
+                {
+                    //MessageBox.Show("Couldn't read file bitrate :(");
+                    this.bitrate = -1;
+                }
             }
             ~InputFile()
             {
@@ -102,7 +123,7 @@ namespace FFMPEG_Wrapper.Forms.MainWindow
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Failed to delete preview pic {previewPath} \n\n Exception:\n {ex.Message} \n\n Stacktrace:\n {ex.StackTrace}", "Exception!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show($"Failed to delete preview pic {previewPath} \n\n Exception:\n {ex.Message} \n\n Stacktrace:\n {ex.StackTrace}", "Exception!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
             }

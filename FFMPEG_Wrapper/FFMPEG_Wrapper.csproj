@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>FFMPEG_Wrapper</RootNamespace>
     <AssemblyName>FFMPEG_Wrapper</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>false</Deterministic>
@@ -38,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +48,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>FFMPEG_Wrapper.StartPoint</StartupObject>
@@ -59,6 +61,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -100,6 +103,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\MainWindow\Config.cs" />
+    <Compile Include="Forms\Worker\VideoProcessLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Worker\VideoProcessLabel.Designer.cs">
+      <DependentUpon>VideoProcessLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\About\AboutPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -165,15 +174,21 @@
     <Compile Include="StartPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityComponents\StopWatchUtils.cs" />
-    <Compile Include="VideoComponents\VideoProcessor.cs" />
+    <Compile Include="VideoComponents\EncodeParameters.cs" />
     <Compile Include="Forms\Worker\Worker.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Worker\Worker.Designer.cs">
       <DependentUpon>Worker.cs</DependentUpon>
     </Compile>
+    <Compile Include="VideoComponents\VideoProcess.cs" />
+    <Compile Include="VideoComponents\VideoRecoder.cs" />
+    <Compile Include="VideoComponents\VideoConcatenator.cs" />
     <EmbeddedResource Include="Forms\FormUtils\CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Worker\VideoProcessLabel.resx">
+      <DependentUpon>VideoProcessLabel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\About\AboutPanel.resx">
       <DependentUpon>AboutPanel.cs</DependentUpon>
@@ -192,6 +207,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Forms\Worker\Worker.resx">
       <DependentUpon>Worker.cs</DependentUpon>
@@ -238,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <None Include="img\ok_32px.png" />
+    <None Include="img\progress_indicator_32px.png" />
+    <None Include="img\error_32px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

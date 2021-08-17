@@ -1,4 +1,5 @@
 ﻿using FFMPEG_Wrapper.Forms.MainWindow;
+using FFMPEG_Wrapper.VideoComponents;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using static FFMPEG_Wrapper.Forms.MainWindow.FileManager;
-using static FFMPEG_Wrapper.VideoProcessor;
 
 namespace FFMPEG_Wrapper.UserControls.Output
 {
@@ -99,10 +99,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
         #endregion
 
 
-        VideoProcessor.VideoCodec selectedVCodec;
-        VideoProcessor.AudioCodec selectedACodec;
-        VideoProcessor.Preset selectedPreset;
-        VideoProcessor.OutExtension selectedExtension;
+        VideoCodec selectedVCodec;
+        AudioCodec selectedACodec;
+        Preset selectedPreset;
+        OutExtension selectedExtension;
         float bitRate = 0;
 
         public OutputPanel()
@@ -115,11 +115,11 @@ namespace FFMPEG_Wrapper.UserControls.Output
 
         void SetUILinks()
         {
-            videocodecCombo.DataSource = Enum.GetValues(typeof(VideoProcessor.VideoCodec));
-            audioCodecCombo.DataSource = Enum.GetValues(typeof(VideoProcessor.AudioCodec));
-            presetCombo.DataSource = Enum.GetValues(typeof(VideoProcessor.Preset));
-            presetCombo.SelectedItem = VideoProcessor.Preset.medium;
-            extentionCombo.DataSource = Enum.GetValues(typeof(VideoProcessor.OutExtension));
+            videocodecCombo.DataSource = Enum.GetValues(typeof(VideoCodec));
+            audioCodecCombo.DataSource = Enum.GetValues(typeof(AudioCodec));
+            presetCombo.DataSource = Enum.GetValues(typeof(Preset));
+            presetCombo.SelectedItem = Preset.medium;
+            extentionCombo.DataSource = Enum.GetValues(typeof(OutExtension));
         }
         void UpdateUI()
         {
@@ -149,6 +149,26 @@ namespace FFMPEG_Wrapper.UserControls.Output
                 {
                     startButton.Enabled = false;
                     startButton.Text = $"Select files in input tab to be able to start process...";
+                }
+            }
+
+            if (Visible)
+            {
+                int c = 0;
+                for (int i = 0; i < FileManager.Instance.CurrentFiles.Count; i++)
+                {
+                    if (FileManager.Instance.CurrentFiles[i].Selected)
+                        c++;
+                }
+                if (c > 1)
+                {
+                    concatButton.Enabled = true;
+                    concatButton.Text = $"Concatenate {c} file(s)...";
+                }
+                else
+                {
+                    concatButton.Enabled = false;
+                    concatButton.Text = $"Select >1 files to concatenate";
                 }
             }
         }
@@ -242,23 +262,88 @@ namespace FFMPEG_Wrapper.UserControls.Output
                 preset: selectedPreset,
                 extention: selectedExtension,
                 bitrateBox.Checked ? bitRate : file.GetFileBitrate()/1024f,
-                width: customWidthBox.Checked ? (int)customWidthNumeric.Value : -2,
-                heigh: customHeightBox.Checked ? (int)customHeightNumeric.Value : -2,
+                width: customWidthBox.Checked ? ((int)customWidthNumeric.Value) : file.GetFileWidth(),
+                height: customHeightBox.Checked ? ((int)customHeightNumeric.Value) : file.GetFileHeight(),
                 horizontalFlip: horFlipBox.Checked,
-                verticalFlip: verFlipBox.Checked
+                verticalFlip: verFlipBox.Checked,
+                saveAspect: saveAspectButton.Checked
                 );
         }
+        public ConcatParameters GetConcatParameters(List<EncodeParameters> encodeParameters)
+        {
+            List<string> videoPaths = new List<string>();
+            for (int i = 0; i < encodeParameters.Count; i++)
+                videoPaths.Add(encodeParameters[i].OutputPath);
 
+            string fileName = "";
+            for (int i = 0; i < encodeParameters.Count; i++)
+            {
+                fileName += encodeParameters[i].OutputName + '_';
+            }
+
+                return new ConcatParameters(
+                inputPaths: videoPaths,
+                outputFolder: savePathLabel.Text,
+                outputName: autoNamingBox.Checked ? $"concat_{fileName}" : $"{prefixBox.Texts}{fileName}{postfixBox.Texts}",
+                extention: OutExtension.mkv
+                );
+        }
         private void startButton_Click(object sender, EventArgs e)
         {
+            List<VideoProcess> recoders = new List<VideoProcess>();
+            for (int i = 0; i < FileManager.Instance.CurrentFiles.Count; i++)
+                if(FileManager.Instance.CurrentFiles[i].Selected)
+                    recoders.Add(new VideoRecoder(GetEncodeParameters(FileManager.Instance.CurrentFiles[i])));
+
+            WorkerForm worker = new WorkerForm(recoders);
+            worker.Load += Worker_GotFocus;
+            worker.FormClosed += Worker_FormClosed;
+
+            worker.Show();
+            worker.Start();
+
+            
+        }
+
+        private void Worker_GotFocus(object sender, EventArgs e)
+        {
+            this.Parent.Enabled = false;
+            this.Parent.Hide();
+        }
+
+        private void Worker_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Parent.Enabled = true;
+            this.Parent.Show();
+        }
+
+        private void concatButton_Click(object sender, EventArgs e)
+        {
+            List<VideoProcess> recoders = new List<VideoProcess>();
+            List<EncodeParameters> allEncodeParameters = new List<EncodeParameters>();
+
+
             for (int i = 0; i < FileManager.Instance.CurrentFiles.Count; i++)
             {
-                VideoProcessor videoProcessor = new VideoProcessor(GetEncodeParameters(FileManager.Instance.CurrentFiles[i]));
-                videoProcessor.onProcessExit += OnWorkerExited;
-                videoProcessor.StartProcessing();
+                if (FileManager.Instance.CurrentFiles[i].Selected)
+                {
+                    EncodeParameters parameters = GetEncodeParameters(FileManager.Instance.CurrentFiles[i]);
+                    allEncodeParameters.Add(parameters);
+                    recoders.Add(new VideoRecoder(parameters));
+                }
             }
+
+            recoders.Add(new VideoConcatenator(GetConcatParameters(allEncodeParameters)));
+
+            WorkerForm worker = new WorkerForm(recoders);
+            worker.Load += Worker_GotFocus;
+            worker.FormClosed += Worker_FormClosed;
+
+            worker.Show();
+            worker.Start();
         }
-        private void OnWorkerExited(object sender, EventArgs e)
+
+        private void saveAspectButton_CheckedChanged(object sender, EventArgs e)
         {
 
         }

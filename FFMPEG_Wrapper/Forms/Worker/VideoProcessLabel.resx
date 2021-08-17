@@ -117,14 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="error_32px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\img\error_32px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="OpenFolderPic.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAADaSURBVFhH7ZRbCsIwEEWzD12On/5Jd+S/IK7CjXQFLkNcgcQ75ipSUjuGGZJiD1xKOpPMgT5C
+        dWKMV0UubLcHh2s5costPFzDHVlxmx3pbDU9t9nBg38h944Up0TAlKYEznwq7sisNHJOAqivkS6TLVvU
+        YE+RgAwb48A2FegvF+DyjdwDN2TPW5Og11xAkO9a9btGn4uAIBInlkZBj5vAix3LWVC3ExgiPaDjMgvq
+        i8AiMGMBXr9FcBXQYC9gicxKIxsT6JHh8/SKzHryKVCFJgQ2NcPX4m8J4QGYsu1/hpg8SwAAAABJRU5E
+        rkJggg==
+</value>
   </data>
-  <data name="ok_32px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\img\ok_32px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="openVideoPic.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAFTSURBVFhH7ZcxTgMxFERXCh1Q0eQIHICSMi0lp6CgQ0IUUHEQmii5QloqOs7ABWgoIEJmxn8c
+        EYJje+1tIE8aaeU/fzRFtPF2O2I450bQCXSeqYlW60HYIfQElXKliDoQdGN5vagvgZCpZXkmGXqEllCg
+        rgQCZpbjnI62AtsceoPeuSNuNS4Hy30KkDYlsNi3AKkvgaWaAqSuBBZqCxCW+LBHz4XsaWBuUYCwRGAm
+        exqabSevwDYUQ/5QARwf6TGJpXiaFuD8ARrrKAozRNMC4Uf3Cl1Cexpt4F3GIAUCz9CpxmvY2DNoAfIJ
+        3cuywkaeQQvwrXcH7cuywk+NwQosoGONNjCLp3mBF+hMR1GYIZoW4B0w613gQ4x2BUpQDNkVKCrw/VL6
+        8/5fqsBU8WlgrrmWx7hWfBqY+36YxGDWgeLzwEL4NPvtO6BEzIj+Wf13uu4Lnvn0SjJgcecAAAAASUVO
+        RK5CYII=
+</value>
   </data>
-  <data name="progress_indicator_32px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\img\progress_indicator_32px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="statusPicture.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAbJJREFUWEft
+        lr9Kw1AUxiPYNKalVLtU36KgdNVdQQdHfQfddNRn0M1/IKIFEUSkoNC0KnRwVBzEgh1EsDioIA71eG56
+        vOamNyG2t0UhH3wQcs4930npr6kWKtS/FRS0Xigay2AZS+yabndPYOmLUIyC7ZK+QLe7Izg3hzD4lS/A
+        rkvmIJU7L3zidUc4WV+jcmcFVmQEA+vNC+C9QmSY2jojAK0Hn/RCEk7GGvZQu3rhF29aHuww9lC7WsGl
+        ZmJA9TvoaiMFM6NZ2zdbKecSFcTSoGPqJGCHvt3u5wvc7Qw4F1CPJUMMBzuxg/u9JF+gmkuKC6jGUobd
+        w36CL/B4kBBqDSvC0gu72mGcL/B8FBdq5Do7S2Nakx92L8cxvsBbPtZUb7hNLP2wez8x+QIfp33SHtut
+        YslQwgGVpoHkumXY4bNjWfi05D3k1rB0Y9eWcRaNDSYZdjKXV9JQXk1Lay7/DkuGkGSI4OvNn19Cdi3r
+        ER0QS5+3nWCG3txkBuanMl4Yuh0MS2zMuw6qdJ5ivIUfVU1yUJWfKMZbYEUn8M/mLpSMnFKzmWfRcYoJ
+        FeqvSNO+AGsvW6GzebL2AAAAAElFTkSuQmCC
+</value>
   </data>
 </root>

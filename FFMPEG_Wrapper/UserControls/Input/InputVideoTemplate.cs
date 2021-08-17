@@ -45,7 +45,8 @@ namespace FFMPEG_Wrapper.UserControls
         {
             this.inputFile = inputFile;
             this.fileName.Text = inputFile.GetFileName();
-            this.fileFormat.Text = $"{inputFile.GetFileWidth()}x{inputFile.GetFileHeight()} {inputFile.GetFileBitrate()}kbit/s .{inputFile.GetFileExtention()}";
+            string bitrate = inputFile.GetFileBitrate() < 0 ? "unknown" : $"{inputFile.GetFileBitrate()}kbit/s";
+            this.fileFormat.Text = $"{inputFile.GetFileWidth()}x{inputFile.GetFileHeight()} {bitrate} .{inputFile.GetFileExtention()}";
             preview.BackgroundImage = Image.FromFile(inputFile.GetFilePreviewPath());
         }
 

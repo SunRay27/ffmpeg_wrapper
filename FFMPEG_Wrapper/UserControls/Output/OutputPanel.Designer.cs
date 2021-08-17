@@ -31,6 +31,7 @@ namespace FFMPEG_Wrapper.UserControls.Output
         {
             this.layoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.miscPanel = new FFMPEG_Wrapper.Forms.FormUtils.SmoothPanel();
+            this.concatButton = new FFMPEG_Wrapper.UserControls.Output.RJButton();
             this.startButton = new FFMPEG_Wrapper.UserControls.Output.RJButton();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,18 +54,19 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.presetLabel = new System.Windows.Forms.Label();
             this.videoCodecLabel = new System.Windows.Forms.Label();
             this.videocodecCombo = new FFMPEG_Wrapper.Forms.FormUtils.RoundedComboBox();
-            this.horFlipBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
-            this.verFlipBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
-            this.customHeightBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
-            this.customWidthBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
-            this.customWidthLabel = new System.Windows.Forms.Label();
-            this.customHeightLabel = new System.Windows.Forms.Label();
-            this.customWidthNumeric = new FFMPEG_Wrapper.Forms.FormUtils.CustomNumeric();
-            this.customHeightNumeric = new FFMPEG_Wrapper.Forms.FormUtils.CustomNumeric();
             this.bitrateBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
             this.bitrateNumeric = new FFMPEG_Wrapper.Forms.FormUtils.CustomNumeric();
             this.bitrateHelperLabel = new System.Windows.Forms.Label();
             this.bitrateLabel = new System.Windows.Forms.Label();
+            this.horFlipBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
+            this.verFlipBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
+            this.customHeightBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
+            this.customWidthBox = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
+            this.customHeightLabel = new System.Windows.Forms.Label();
+            this.customWidthLabel = new System.Windows.Forms.Label();
+            this.customHeightNumeric = new FFMPEG_Wrapper.Forms.FormUtils.CustomNumeric();
+            this.customWidthNumeric = new FFMPEG_Wrapper.Forms.FormUtils.CustomNumeric();
+            this.saveAspectButton = new FFMPEG_Wrapper.Forms.FormUtils.ToggleButton();
             this.tipPanel = new FFMPEG_Wrapper.Forms.FormUtils.SmoothPanel();
             this.tipTextBox = new System.Windows.Forms.TextBox();
             this.layoutPanel.SuspendLayout();
@@ -73,9 +75,9 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.tableLayoutPanel2.SuspendLayout();
             this.videoPanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.customWidthNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customHeightNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bitrateNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customHeightNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customWidthNumeric)).BeginInit();
             this.tipPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,11 +92,12 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.layoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.layoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.layoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.layoutPanel.Name = "layoutPanel";
             this.layoutPanel.RowCount = 1;
             this.layoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.layoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.layoutPanel.Size = new System.Drawing.Size(1050, 507);
+            this.layoutPanel.Size = new System.Drawing.Size(1488, 718);
             this.layoutPanel.TabIndex = 2;
             // 
             // miscPanel
@@ -104,19 +107,42 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.miscPanel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.miscPanel.BorderRadius = 5;
             this.miscPanel.BorderWidth = 1F;
+            this.miscPanel.Controls.Add(this.concatButton);
             this.miscPanel.Controls.Add(this.startButton);
             this.miscPanel.Controls.Add(this.tableLayoutPanel3);
             this.miscPanel.Controls.Add(this.tableLayoutPanel2);
             this.miscPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.miscPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.miscPanel.Location = new System.Drawing.Point(528, 3);
+            this.miscPanel.Location = new System.Drawing.Point(748, 4);
+            this.miscPanel.Margin = new System.Windows.Forms.Padding(4);
             this.miscPanel.Name = "miscPanel";
             this.miscPanel.OffsetXBottom = 25;
             this.miscPanel.OffsetXTop = 25;
             this.miscPanel.OffsetYBottom = 25;
             this.miscPanel.OffsetYTop = 25;
-            this.miscPanel.Size = new System.Drawing.Size(519, 501);
+            this.miscPanel.Size = new System.Drawing.Size(736, 710);
             this.miscPanel.TabIndex = 1;
+            // 
+            // concatButton
+            // 
+            this.concatButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.concatButton.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.concatButton.BorderColor = System.Drawing.Color.Crimson;
+            this.concatButton.BorderRadius = 9;
+            this.concatButton.BorderSize = 2;
+            this.concatButton.FlatAppearance.BorderSize = 0;
+            this.concatButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.concatButton.Font = new System.Drawing.Font("Century Gothic", 12.75F);
+            this.concatButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.concatButton.Location = new System.Drawing.Point(24, 619);
+            this.concatButton.Margin = new System.Windows.Forms.Padding(4);
+            this.concatButton.Name = "concatButton";
+            this.concatButton.Size = new System.Drawing.Size(679, 56);
+            this.concatButton.TabIndex = 38;
+            this.concatButton.Text = "Reencode N files...";
+            this.concatButton.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.concatButton.UseVisualStyleBackColor = false;
+            this.concatButton.Click += new System.EventHandler(this.concatButton_Click);
             // 
             // startButton
             // 
@@ -129,9 +155,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.startButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.startButton.Font = new System.Drawing.Font("Century Gothic", 12.75F);
             this.startButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.startButton.Location = new System.Drawing.Point(18, 391);
+            this.startButton.Location = new System.Drawing.Point(25, 554);
+            this.startButton.Margin = new System.Windows.Forms.Padding(4);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(479, 40);
+            this.startButton.Size = new System.Drawing.Size(679, 56);
             this.startButton.TabIndex = 37;
             this.startButton.Text = "Reencode N files...";
             this.startButton.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
@@ -141,19 +168,20 @@ namespace FFMPEG_Wrapper.UserControls.Output
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 358F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 507F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 176F));
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.selectSavePathButton, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.defaultSavePathBox, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.savePathLabel, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(18, 187);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(25, 265);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(482, 87);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(683, 123);
             this.tableLayoutPanel3.TabIndex = 36;
             // 
             // label1
@@ -165,9 +193,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 12F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Location = new System.Drawing.Point(4, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(352, 37);
+            this.label1.Size = new System.Drawing.Size(499, 52);
             this.label1.TabIndex = 37;
             this.label1.Text = "Save folder";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -183,9 +212,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.selectSavePathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.selectSavePathButton.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.selectSavePathButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.selectSavePathButton.Location = new System.Drawing.Point(361, 40);
+            this.selectSavePathButton.Location = new System.Drawing.Point(511, 56);
+            this.selectSavePathButton.Margin = new System.Windows.Forms.Padding(4);
             this.selectSavePathButton.Name = "selectSavePathButton";
-            this.selectSavePathButton.Size = new System.Drawing.Size(118, 40);
+            this.selectSavePathButton.Size = new System.Drawing.Size(167, 56);
             this.selectSavePathButton.TabIndex = 36;
             this.selectSavePathButton.Text = "Select...";
             this.selectSavePathButton.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
@@ -199,14 +229,15 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.defaultSavePathBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.defaultSavePathBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.defaultSavePathBox.ForeColor = System.Drawing.Color.White;
-            this.defaultSavePathBox.Location = new System.Drawing.Point(361, 7);
-            this.defaultSavePathBox.MinimumSize = new System.Drawing.Size(45, 22);
+            this.defaultSavePathBox.Location = new System.Drawing.Point(511, 10);
+            this.defaultSavePathBox.Margin = new System.Windows.Forms.Padding(4);
+            this.defaultSavePathBox.MinimumSize = new System.Drawing.Size(63, 31);
             this.defaultSavePathBox.Name = "defaultSavePathBox";
             this.defaultSavePathBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
             this.defaultSavePathBox.OffToggleColor = System.Drawing.Color.Gainsboro;
             this.defaultSavePathBox.OnBackColor = System.Drawing.Color.Crimson;
             this.defaultSavePathBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.defaultSavePathBox.Size = new System.Drawing.Size(118, 22);
+            this.defaultSavePathBox.Size = new System.Drawing.Size(168, 31);
             this.defaultSavePathBox.TabIndex = 35;
             this.defaultSavePathBox.Text = "Default";
             this.defaultSavePathBox.ToggleWidth = 50;
@@ -219,9 +250,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.savePathLabel.AutoSize = true;
             this.savePathLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.savePathLabel.ForeColor = System.Drawing.Color.White;
-            this.savePathLabel.Location = new System.Drawing.Point(3, 53);
+            this.savePathLabel.Location = new System.Drawing.Point(4, 76);
+            this.savePathLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.savePathLabel.Name = "savePathLabel";
-            this.savePathLabel.Size = new System.Drawing.Size(352, 17);
+            this.savePathLabel.Size = new System.Drawing.Size(499, 22);
             this.savePathLabel.TabIndex = 38;
             this.savePathLabel.Text = "label2";
             this.savePathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -230,10 +262,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 4;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 138F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 181F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 195F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tableLayoutPanel2.Controls.Add(this.audioCodecCombo, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.audioCodecLabel, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.extentionLabel, 0, 1);
@@ -243,15 +275,16 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.tableLayoutPanel2.Controls.Add(this.postfixBox, 2, 4);
             this.tableLayoutPanel2.Controls.Add(this.prefixBox, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.autoNamingBox, 0, 4);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(18, 17);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(25, 24);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 5;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(482, 146);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(683, 207);
             this.tableLayoutPanel2.TabIndex = 28;
             // 
             // audioCodecCombo
@@ -266,11 +299,12 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.audioCodecCombo.IconColor = System.Drawing.Color.Crimson;
             this.audioCodecCombo.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.audioCodecCombo.ListTextColor = System.Drawing.Color.White;
-            this.audioCodecCombo.Location = new System.Drawing.Point(131, 5);
+            this.audioCodecCombo.Location = new System.Drawing.Point(185, 7);
+            this.audioCodecCombo.Margin = new System.Windows.Forms.Padding(4);
             this.audioCodecCombo.MinimumSize = new System.Drawing.Size(1, 1);
             this.audioCodecCombo.Name = "audioCodecCombo";
             this.audioCodecCombo.Padding = new System.Windows.Forms.Padding(1);
-            this.audioCodecCombo.Size = new System.Drawing.Size(132, 26);
+            this.audioCodecCombo.Size = new System.Drawing.Size(187, 37);
             this.audioCodecCombo.TabIndex = 31;
             this.audioCodecCombo.Texts = "";
             this.audioCodecCombo.OnSelectedIndexChanged += new System.EventHandler(this.audioCodecCombo_OnSelectedIndexChanged);
@@ -282,9 +316,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.audioCodecLabel.BackColor = System.Drawing.Color.Transparent;
             this.audioCodecLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.audioCodecLabel.ForeColor = System.Drawing.Color.White;
-            this.audioCodecLabel.Location = new System.Drawing.Point(3, 9);
+            this.audioCodecLabel.Location = new System.Drawing.Point(4, 14);
+            this.audioCodecLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.audioCodecLabel.Name = "audioCodecLabel";
-            this.audioCodecLabel.Size = new System.Drawing.Size(122, 17);
+            this.audioCodecLabel.Size = new System.Drawing.Size(173, 22);
             this.audioCodecLabel.TabIndex = 12;
             this.audioCodecLabel.Text = "Audio codec";
             // 
@@ -294,9 +329,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.extentionLabel.BackColor = System.Drawing.Color.Transparent;
             this.extentionLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.extentionLabel.ForeColor = System.Drawing.Color.White;
-            this.extentionLabel.Location = new System.Drawing.Point(3, 43);
+            this.extentionLabel.Location = new System.Drawing.Point(4, 61);
+            this.extentionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.extentionLabel.Name = "extentionLabel";
-            this.extentionLabel.Size = new System.Drawing.Size(122, 17);
+            this.extentionLabel.Size = new System.Drawing.Size(173, 24);
             this.extentionLabel.TabIndex = 13;
             this.extentionLabel.Text = "Output extension";
             this.extentionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -314,11 +350,12 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.extentionCombo.IconColor = System.Drawing.Color.Crimson;
             this.extentionCombo.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.extentionCombo.ListTextColor = System.Drawing.Color.White;
-            this.extentionCombo.Location = new System.Drawing.Point(131, 39);
+            this.extentionCombo.Location = new System.Drawing.Point(185, 55);
+            this.extentionCombo.Margin = new System.Windows.Forms.Padding(4);
             this.extentionCombo.MinimumSize = new System.Drawing.Size(1, 1);
             this.extentionCombo.Name = "extentionCombo";
             this.extentionCombo.Padding = new System.Windows.Forms.Padding(1);
-            this.extentionCombo.Size = new System.Drawing.Size(132, 26);
+            this.extentionCombo.Size = new System.Drawing.Size(187, 37);
             this.extentionCombo.TabIndex = 32;
             this.extentionCombo.Texts = "";
             this.extentionCombo.OnSelectedIndexChanged += new System.EventHandler(this.extentionCombo_OnSelectedIndexChanged);
@@ -330,9 +367,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.postfixLabel.BackColor = System.Drawing.Color.Transparent;
             this.postfixLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.postfixLabel.ForeColor = System.Drawing.Color.White;
-            this.postfixLabel.Location = new System.Drawing.Point(269, 84);
+            this.postfixLabel.Location = new System.Drawing.Point(380, 120);
+            this.postfixLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.postfixLabel.Name = "postfixLabel";
-            this.postfixLabel.Size = new System.Drawing.Size(116, 17);
+            this.postfixLabel.Size = new System.Drawing.Size(165, 22);
             this.postfixLabel.TabIndex = 15;
             this.postfixLabel.Text = "Postfix";
             // 
@@ -343,9 +381,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.prefixLabel.BackColor = System.Drawing.Color.Transparent;
             this.prefixLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.prefixLabel.ForeColor = System.Drawing.Color.White;
-            this.prefixLabel.Location = new System.Drawing.Point(131, 84);
+            this.prefixLabel.Location = new System.Drawing.Point(185, 120);
+            this.prefixLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.prefixLabel.Name = "prefixLabel";
-            this.prefixLabel.Size = new System.Drawing.Size(132, 17);
+            this.prefixLabel.Size = new System.Drawing.Size(187, 22);
             this.prefixLabel.TabIndex = 14;
             this.prefixLabel.Text = "Prefix";
             // 
@@ -360,15 +399,15 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.postfixBox.BorderSize = 1;
             this.postfixBox.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.postfixBox.ForeColor = System.Drawing.Color.White;
-            this.postfixBox.Location = new System.Drawing.Point(270, 109);
-            this.postfixBox.Margin = new System.Windows.Forms.Padding(4);
+            this.postfixBox.Location = new System.Drawing.Point(382, 155);
+            this.postfixBox.Margin = new System.Windows.Forms.Padding(6);
             this.postfixBox.Multiline = false;
             this.postfixBox.Name = "postfixBox";
-            this.postfixBox.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.postfixBox.Padding = new System.Windows.Forms.Padding(14, 10, 14, 10);
             this.postfixBox.PasswordChar = false;
             this.postfixBox.PlaceholderColor = System.Drawing.Color.White;
             this.postfixBox.PlaceholderText = "";
-            this.postfixBox.Size = new System.Drawing.Size(114, 32);
+            this.postfixBox.Size = new System.Drawing.Size(161, 43);
             this.postfixBox.TabIndex = 34;
             this.postfixBox.Texts = "";
             this.postfixBox.UnderlinedStyle = false;
@@ -384,15 +423,15 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.prefixBox.BorderSize = 1;
             this.prefixBox.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.prefixBox.ForeColor = System.Drawing.Color.White;
-            this.prefixBox.Location = new System.Drawing.Point(132, 109);
-            this.prefixBox.Margin = new System.Windows.Forms.Padding(4);
+            this.prefixBox.Location = new System.Drawing.Point(187, 155);
+            this.prefixBox.Margin = new System.Windows.Forms.Padding(6);
             this.prefixBox.Multiline = false;
             this.prefixBox.Name = "prefixBox";
-            this.prefixBox.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.prefixBox.Padding = new System.Windows.Forms.Padding(14, 10, 14, 10);
             this.prefixBox.PasswordChar = false;
             this.prefixBox.PlaceholderColor = System.Drawing.Color.White;
             this.prefixBox.PlaceholderText = "";
-            this.prefixBox.Size = new System.Drawing.Size(130, 32);
+            this.prefixBox.Size = new System.Drawing.Size(183, 43);
             this.prefixBox.TabIndex = 33;
             this.prefixBox.Texts = "";
             this.prefixBox.UnderlinedStyle = false;
@@ -404,14 +443,15 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.autoNamingBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.autoNamingBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.autoNamingBox.ForeColor = System.Drawing.Color.White;
-            this.autoNamingBox.Location = new System.Drawing.Point(3, 114);
-            this.autoNamingBox.MinimumSize = new System.Drawing.Size(45, 22);
+            this.autoNamingBox.Location = new System.Drawing.Point(4, 162);
+            this.autoNamingBox.Margin = new System.Windows.Forms.Padding(4);
+            this.autoNamingBox.MinimumSize = new System.Drawing.Size(63, 31);
             this.autoNamingBox.Name = "autoNamingBox";
             this.autoNamingBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
             this.autoNamingBox.OffToggleColor = System.Drawing.Color.Gainsboro;
             this.autoNamingBox.OnBackColor = System.Drawing.Color.Crimson;
             this.autoNamingBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.autoNamingBox.Size = new System.Drawing.Size(122, 22);
+            this.autoNamingBox.Size = new System.Drawing.Size(173, 31);
             this.autoNamingBox.TabIndex = 35;
             this.autoNamingBox.Text = "Auto";
             this.autoNamingBox.ToggleWidth = 50;
@@ -429,13 +469,14 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.videoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.videoPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.videoPanel.ForeColor = System.Drawing.Color.White;
-            this.videoPanel.Location = new System.Drawing.Point(3, 3);
+            this.videoPanel.Location = new System.Drawing.Point(4, 4);
+            this.videoPanel.Margin = new System.Windows.Forms.Padding(4);
             this.videoPanel.Name = "videoPanel";
             this.videoPanel.OffsetXBottom = 25;
             this.videoPanel.OffsetXTop = 25;
             this.videoPanel.OffsetYBottom = 25;
             this.videoPanel.OffsetYTop = 25;
-            this.videoPanel.Size = new System.Drawing.Size(519, 501);
+            this.videoPanel.Size = new System.Drawing.Size(736, 710);
             this.videoPanel.TabIndex = 2;
             // 
             // tableLayoutPanel1
@@ -444,41 +485,44 @@ namespace FFMPEG_Wrapper.UserControls.Output
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 178F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 132F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 252F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 187F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 198F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.presetCombo, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.presetLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.videoCodecLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.videocodecCombo, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.horFlipBox, 0, 9);
-            this.tableLayoutPanel1.Controls.Add(this.verFlipBox, 0, 8);
-            this.tableLayoutPanel1.Controls.Add(this.customHeightBox, 0, 7);
-            this.tableLayoutPanel1.Controls.Add(this.customWidthBox, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.customWidthLabel, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.customHeightLabel, 1, 7);
-            this.tableLayoutPanel1.Controls.Add(this.customWidthNumeric, 2, 6);
-            this.tableLayoutPanel1.Controls.Add(this.customHeightNumeric, 2, 7);
             this.tableLayoutPanel1.Controls.Add(this.bitrateBox, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.bitrateNumeric, 2, 3);
             this.tableLayoutPanel1.Controls.Add(this.bitrateHelperLabel, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.bitrateLabel, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.horFlipBox, 0, 10);
+            this.tableLayoutPanel1.Controls.Add(this.verFlipBox, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.customHeightBox, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.customWidthBox, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.customHeightLabel, 1, 8);
+            this.tableLayoutPanel1.Controls.Add(this.customWidthLabel, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.customHeightNumeric, 2, 8);
+            this.tableLayoutPanel1.Controls.Add(this.customWidthNumeric, 2, 7);
+            this.tableLayoutPanel1.Controls.Add(this.saveAspectButton, 0, 6);
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(26, 17);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(37, 24);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 10;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 144F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(464, 414);
+            this.tableLayoutPanel1.RowCount = 11;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 168F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(658, 651);
             this.tableLayoutPanel1.TabIndex = 35;
             // 
             // presetCombo
@@ -493,11 +537,12 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.presetCombo.IconColor = System.Drawing.Color.Crimson;
             this.presetCombo.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.presetCombo.ListTextColor = System.Drawing.Color.White;
-            this.presetCombo.Location = new System.Drawing.Point(181, 35);
+            this.presetCombo.Location = new System.Drawing.Point(256, 49);
+            this.presetCombo.Margin = new System.Windows.Forms.Padding(4);
             this.presetCombo.MinimumSize = new System.Drawing.Size(1, 1);
             this.presetCombo.Name = "presetCombo";
             this.presetCombo.Padding = new System.Windows.Forms.Padding(1);
-            this.presetCombo.Size = new System.Drawing.Size(126, 26);
+            this.presetCombo.Size = new System.Drawing.Size(179, 37);
             this.presetCombo.TabIndex = 31;
             this.presetCombo.Texts = "";
             this.presetCombo.OnSelectedIndexChanged += new System.EventHandler(this.presetCombo_OnSelectedIndexChanged);
@@ -511,9 +556,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.presetLabel.BackColor = System.Drawing.Color.Transparent;
             this.presetLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.presetLabel.ForeColor = System.Drawing.Color.White;
-            this.presetLabel.Location = new System.Drawing.Point(3, 32);
+            this.presetLabel.Location = new System.Drawing.Point(4, 45);
+            this.presetLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.presetLabel.Name = "presetLabel";
-            this.presetLabel.Size = new System.Drawing.Size(172, 32);
+            this.presetLabel.Size = new System.Drawing.Size(244, 45);
             this.presetLabel.TabIndex = 4;
             this.presetLabel.Text = "Preset";
             this.presetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -527,9 +573,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.videoCodecLabel.BackColor = System.Drawing.Color.Transparent;
             this.videoCodecLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.videoCodecLabel.ForeColor = System.Drawing.Color.White;
-            this.videoCodecLabel.Location = new System.Drawing.Point(3, 0);
+            this.videoCodecLabel.Location = new System.Drawing.Point(4, 0);
+            this.videoCodecLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.videoCodecLabel.Name = "videoCodecLabel";
-            this.videoCodecLabel.Size = new System.Drawing.Size(172, 32);
+            this.videoCodecLabel.Size = new System.Drawing.Size(244, 45);
             this.videoCodecLabel.TabIndex = 10;
             this.videoCodecLabel.Text = "Video codec";
             this.videoCodecLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -546,186 +593,30 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.videocodecCombo.IconColor = System.Drawing.Color.Crimson;
             this.videocodecCombo.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.videocodecCombo.ListTextColor = System.Drawing.Color.White;
-            this.videocodecCombo.Location = new System.Drawing.Point(181, 3);
+            this.videocodecCombo.Location = new System.Drawing.Point(256, 4);
+            this.videocodecCombo.Margin = new System.Windows.Forms.Padding(4);
             this.videocodecCombo.MinimumSize = new System.Drawing.Size(1, 1);
             this.videocodecCombo.Name = "videocodecCombo";
             this.videocodecCombo.Padding = new System.Windows.Forms.Padding(1);
-            this.videocodecCombo.Size = new System.Drawing.Size(126, 26);
+            this.videocodecCombo.Size = new System.Drawing.Size(179, 37);
             this.videocodecCombo.TabIndex = 30;
             this.videocodecCombo.Texts = "";
             this.videocodecCombo.OnSelectedIndexChanged += new System.EventHandler(this.videocodecCombo_OnSelectedIndexChanged);
-            // 
-            // horFlipBox
-            // 
-            this.horFlipBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.horFlipBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.horFlipBox.Location = new System.Drawing.Point(3, 385);
-            this.horFlipBox.MinimumSize = new System.Drawing.Size(45, 22);
-            this.horFlipBox.Name = "horFlipBox";
-            this.horFlipBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
-            this.horFlipBox.OffToggleColor = System.Drawing.Color.Gainsboro;
-            this.horFlipBox.OnBackColor = System.Drawing.Color.Crimson;
-            this.horFlipBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.horFlipBox.Size = new System.Drawing.Size(172, 23);
-            this.horFlipBox.TabIndex = 28;
-            this.horFlipBox.Text = "Horizontal flip";
-            this.horFlipBox.ToggleWidth = 50;
-            this.horFlipBox.UseVisualStyleBackColor = true;
-            // 
-            // verFlipBox
-            // 
-            this.verFlipBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.verFlipBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.verFlipBox.Location = new System.Drawing.Point(3, 353);
-            this.verFlipBox.MinimumSize = new System.Drawing.Size(45, 22);
-            this.verFlipBox.Name = "verFlipBox";
-            this.verFlipBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
-            this.verFlipBox.OffToggleColor = System.Drawing.Color.Gainsboro;
-            this.verFlipBox.OnBackColor = System.Drawing.Color.Crimson;
-            this.verFlipBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.verFlipBox.Size = new System.Drawing.Size(172, 23);
-            this.verFlipBox.TabIndex = 32;
-            this.verFlipBox.Text = "Vertical flip";
-            this.verFlipBox.ToggleWidth = 50;
-            this.verFlipBox.UseVisualStyleBackColor = true;
-            // 
-            // customHeightBox
-            // 
-            this.customHeightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.customHeightBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.customHeightBox.Location = new System.Drawing.Point(3, 324);
-            this.customHeightBox.MinimumSize = new System.Drawing.Size(45, 22);
-            this.customHeightBox.Name = "customHeightBox";
-            this.customHeightBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
-            this.customHeightBox.OffToggleColor = System.Drawing.Color.Gainsboro;
-            this.customHeightBox.OnBackColor = System.Drawing.Color.Crimson;
-            this.customHeightBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.customHeightBox.Size = new System.Drawing.Size(172, 22);
-            this.customHeightBox.TabIndex = 33;
-            this.customHeightBox.Text = "Set custom height";
-            this.customHeightBox.ToggleWidth = 50;
-            this.customHeightBox.UseVisualStyleBackColor = true;
-            this.customHeightBox.CheckedChanged += new System.EventHandler(this.customHeightBox_CheckedChanged);
-            // 
-            // customWidthBox
-            // 
-            this.customWidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.customWidthBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.customWidthBox.Location = new System.Drawing.Point(3, 294);
-            this.customWidthBox.MinimumSize = new System.Drawing.Size(45, 22);
-            this.customWidthBox.Name = "customWidthBox";
-            this.customWidthBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
-            this.customWidthBox.OffToggleColor = System.Drawing.Color.Gainsboro;
-            this.customWidthBox.OnBackColor = System.Drawing.Color.Crimson;
-            this.customWidthBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.customWidthBox.Size = new System.Drawing.Size(172, 22);
-            this.customWidthBox.TabIndex = 34;
-            this.customWidthBox.Text = "Set custom width";
-            this.customWidthBox.ToggleWidth = 50;
-            this.customWidthBox.UseVisualStyleBackColor = true;
-            this.customWidthBox.CheckedChanged += new System.EventHandler(this.customWidthBox_CheckedChanged);
-            // 
-            // customWidthLabel
-            // 
-            this.customWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.customWidthLabel.AutoSize = true;
-            this.customWidthLabel.BackColor = System.Drawing.Color.Transparent;
-            this.customWidthLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.customWidthLabel.ForeColor = System.Drawing.Color.White;
-            this.customWidthLabel.Location = new System.Drawing.Point(181, 290);
-            this.customWidthLabel.Name = "customWidthLabel";
-            this.customWidthLabel.Size = new System.Drawing.Size(126, 30);
-            this.customWidthLabel.TabIndex = 15;
-            this.customWidthLabel.Text = "Width";
-            this.customWidthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // customHeightLabel
-            // 
-            this.customHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.customHeightLabel.AutoSize = true;
-            this.customHeightLabel.BackColor = System.Drawing.Color.Transparent;
-            this.customHeightLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
-            this.customHeightLabel.ForeColor = System.Drawing.Color.White;
-            this.customHeightLabel.Location = new System.Drawing.Point(181, 320);
-            this.customHeightLabel.Name = "customHeightLabel";
-            this.customHeightLabel.Size = new System.Drawing.Size(126, 30);
-            this.customHeightLabel.TabIndex = 16;
-            this.customHeightLabel.Text = "Height";
-            this.customHeightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // customWidthNumeric
-            // 
-            this.customWidthNumeric.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.customWidthNumeric.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.customWidthNumeric.Enabled = false;
-            this.customWidthNumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.customWidthNumeric.ForeColor = System.Drawing.Color.White;
-            this.customWidthNumeric.Location = new System.Drawing.Point(313, 293);
-            this.customWidthNumeric.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.customWidthNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.customWidthNumeric.Name = "customWidthNumeric";
-            this.customWidthNumeric.Size = new System.Drawing.Size(61, 23);
-            this.customWidthNumeric.TabIndex = 36;
-            this.customWidthNumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.customWidthNumeric.Value = new decimal(new int[] {
-            1920,
-            0,
-            0,
-            0});
-            // 
-            // customHeightNumeric
-            // 
-            this.customHeightNumeric.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.customHeightNumeric.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.customHeightNumeric.Enabled = false;
-            this.customHeightNumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.customHeightNumeric.ForeColor = System.Drawing.Color.White;
-            this.customHeightNumeric.Location = new System.Drawing.Point(313, 323);
-            this.customHeightNumeric.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.customHeightNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.customHeightNumeric.Name = "customHeightNumeric";
-            this.customHeightNumeric.Size = new System.Drawing.Size(61, 23);
-            this.customHeightNumeric.TabIndex = 37;
-            this.customHeightNumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.customHeightNumeric.Value = new decimal(new int[] {
-            1080,
-            0,
-            0,
-            0});
             // 
             // bitrateBox
             // 
             this.bitrateBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.bitrateBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.bitrateBox.ForeColor = System.Drawing.Color.White;
-            this.bitrateBox.Location = new System.Drawing.Point(3, 97);
-            this.bitrateBox.MinimumSize = new System.Drawing.Size(45, 22);
+            this.bitrateBox.Location = new System.Drawing.Point(4, 137);
+            this.bitrateBox.Margin = new System.Windows.Forms.Padding(4);
+            this.bitrateBox.MinimumSize = new System.Drawing.Size(63, 31);
             this.bitrateBox.Name = "bitrateBox";
             this.bitrateBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
             this.bitrateBox.OffToggleColor = System.Drawing.Color.Gainsboro;
             this.bitrateBox.OnBackColor = System.Drawing.Color.Crimson;
             this.bitrateBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
-            this.bitrateBox.Size = new System.Drawing.Size(172, 22);
+            this.bitrateBox.Size = new System.Drawing.Size(244, 31);
             this.bitrateBox.TabIndex = 38;
             this.bitrateBox.Text = "Change bitrate";
             this.bitrateBox.ToggleWidth = 50;
@@ -739,7 +630,8 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.bitrateNumeric.Enabled = false;
             this.bitrateNumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.bitrateNumeric.ForeColor = System.Drawing.Color.White;
-            this.bitrateNumeric.Location = new System.Drawing.Point(313, 94);
+            this.bitrateNumeric.Location = new System.Drawing.Point(443, 132);
+            this.bitrateNumeric.Margin = new System.Windows.Forms.Padding(4);
             this.bitrateNumeric.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -751,7 +643,7 @@ namespace FFMPEG_Wrapper.UserControls.Output
             0,
             0});
             this.bitrateNumeric.Name = "bitrateNumeric";
-            this.bitrateNumeric.Size = new System.Drawing.Size(126, 23);
+            this.bitrateNumeric.Size = new System.Drawing.Size(178, 30);
             this.bitrateNumeric.TabIndex = 35;
             this.bitrateNumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.bitrateNumeric.Value = new decimal(new int[] {
@@ -769,9 +661,10 @@ namespace FFMPEG_Wrapper.UserControls.Output
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bitrateHelperLabel.AutoSize = true;
             this.bitrateHelperLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bitrateHelperLabel.Location = new System.Drawing.Point(313, 126);
+            this.bitrateHelperLabel.Location = new System.Drawing.Point(443, 177);
+            this.bitrateHelperLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.bitrateHelperLabel.Name = "bitrateHelperLabel";
-            this.bitrateHelperLabel.Size = new System.Drawing.Size(134, 20);
+            this.bitrateHelperLabel.Size = new System.Drawing.Size(190, 28);
             this.bitrateHelperLabel.TabIndex = 11;
             this.bitrateHelperLabel.Text = "-";
             this.bitrateHelperLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -783,12 +676,198 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.bitrateLabel.BackColor = System.Drawing.Color.Transparent;
             this.bitrateLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
             this.bitrateLabel.ForeColor = System.Drawing.Color.White;
-            this.bitrateLabel.Location = new System.Drawing.Point(199, 91);
+            this.bitrateLabel.Location = new System.Drawing.Point(257, 128);
+            this.bitrateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.bitrateLabel.Name = "bitrateLabel";
-            this.bitrateLabel.Size = new System.Drawing.Size(89, 35);
+            this.bitrateLabel.Size = new System.Drawing.Size(177, 49);
             this.bitrateLabel.TabIndex = 2;
             this.bitrateLabel.Text = "New bitrate, Kbit/s";
             this.bitrateLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // horFlipBox
+            // 
+            this.horFlipBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.horFlipBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.horFlipBox.Location = new System.Drawing.Point(4, 603);
+            this.horFlipBox.Margin = new System.Windows.Forms.Padding(4);
+            this.horFlipBox.MinimumSize = new System.Drawing.Size(63, 31);
+            this.horFlipBox.Name = "horFlipBox";
+            this.horFlipBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
+            this.horFlipBox.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.horFlipBox.OnBackColor = System.Drawing.Color.Crimson;
+            this.horFlipBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.horFlipBox.Size = new System.Drawing.Size(244, 32);
+            this.horFlipBox.TabIndex = 28;
+            this.horFlipBox.Text = "Horizontal flip";
+            this.horFlipBox.ToggleWidth = 50;
+            this.horFlipBox.UseVisualStyleBackColor = true;
+            // 
+            // verFlipBox
+            // 
+            this.verFlipBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.verFlipBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.verFlipBox.Location = new System.Drawing.Point(4, 545);
+            this.verFlipBox.Margin = new System.Windows.Forms.Padding(4);
+            this.verFlipBox.MinimumSize = new System.Drawing.Size(63, 31);
+            this.verFlipBox.Name = "verFlipBox";
+            this.verFlipBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
+            this.verFlipBox.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.verFlipBox.OnBackColor = System.Drawing.Color.Crimson;
+            this.verFlipBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.verFlipBox.Size = new System.Drawing.Size(244, 32);
+            this.verFlipBox.TabIndex = 32;
+            this.verFlipBox.Text = "Vertical flip";
+            this.verFlipBox.ToggleWidth = 50;
+            this.verFlipBox.UseVisualStyleBackColor = true;
+            // 
+            // customHeightBox
+            // 
+            this.customHeightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.customHeightBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.customHeightBox.Location = new System.Drawing.Point(4, 492);
+            this.customHeightBox.Margin = new System.Windows.Forms.Padding(4);
+            this.customHeightBox.MinimumSize = new System.Drawing.Size(63, 31);
+            this.customHeightBox.Name = "customHeightBox";
+            this.customHeightBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
+            this.customHeightBox.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.customHeightBox.OnBackColor = System.Drawing.Color.Crimson;
+            this.customHeightBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.customHeightBox.Size = new System.Drawing.Size(244, 31);
+            this.customHeightBox.TabIndex = 33;
+            this.customHeightBox.Text = "Set custom height";
+            this.customHeightBox.ToggleWidth = 50;
+            this.customHeightBox.UseVisualStyleBackColor = true;
+            this.customHeightBox.CheckedChanged += new System.EventHandler(this.customHeightBox_CheckedChanged);
+            // 
+            // customWidthBox
+            // 
+            this.customWidthBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.customWidthBox.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.customWidthBox.Location = new System.Drawing.Point(4, 440);
+            this.customWidthBox.Margin = new System.Windows.Forms.Padding(4);
+            this.customWidthBox.MinimumSize = new System.Drawing.Size(63, 31);
+            this.customWidthBox.Name = "customWidthBox";
+            this.customWidthBox.OffBackColor = System.Drawing.SystemColors.ControlDark;
+            this.customWidthBox.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.customWidthBox.OnBackColor = System.Drawing.Color.Crimson;
+            this.customWidthBox.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.customWidthBox.Size = new System.Drawing.Size(244, 31);
+            this.customWidthBox.TabIndex = 34;
+            this.customWidthBox.Text = "Set custom width";
+            this.customWidthBox.ToggleWidth = 50;
+            this.customWidthBox.UseVisualStyleBackColor = true;
+            this.customWidthBox.CheckedChanged += new System.EventHandler(this.customWidthBox_CheckedChanged);
+            // 
+            // customHeightLabel
+            // 
+            this.customHeightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.customHeightLabel.AutoSize = true;
+            this.customHeightLabel.BackColor = System.Drawing.Color.Transparent;
+            this.customHeightLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.customHeightLabel.ForeColor = System.Drawing.Color.White;
+            this.customHeightLabel.Location = new System.Drawing.Point(256, 482);
+            this.customHeightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.customHeightLabel.Name = "customHeightLabel";
+            this.customHeightLabel.Size = new System.Drawing.Size(179, 52);
+            this.customHeightLabel.TabIndex = 16;
+            this.customHeightLabel.Text = "Height";
+            this.customHeightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // customWidthLabel
+            // 
+            this.customWidthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.customWidthLabel.AutoSize = true;
+            this.customWidthLabel.BackColor = System.Drawing.Color.Transparent;
+            this.customWidthLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F);
+            this.customWidthLabel.ForeColor = System.Drawing.Color.White;
+            this.customWidthLabel.Location = new System.Drawing.Point(256, 429);
+            this.customWidthLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.customWidthLabel.Name = "customWidthLabel";
+            this.customWidthLabel.Size = new System.Drawing.Size(179, 53);
+            this.customWidthLabel.TabIndex = 15;
+            this.customWidthLabel.Text = "Width";
+            this.customWidthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // customHeightNumeric
+            // 
+            this.customHeightNumeric.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.customHeightNumeric.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.customHeightNumeric.Enabled = false;
+            this.customHeightNumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.customHeightNumeric.ForeColor = System.Drawing.Color.White;
+            this.customHeightNumeric.Location = new System.Drawing.Point(443, 493);
+            this.customHeightNumeric.Margin = new System.Windows.Forms.Padding(4);
+            this.customHeightNumeric.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.customHeightNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.customHeightNumeric.Name = "customHeightNumeric";
+            this.customHeightNumeric.Size = new System.Drawing.Size(87, 30);
+            this.customHeightNumeric.TabIndex = 37;
+            this.customHeightNumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.customHeightNumeric.Value = new decimal(new int[] {
+            1080,
+            0,
+            0,
+            0});
+            // 
+            // customWidthNumeric
+            // 
+            this.customWidthNumeric.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.customWidthNumeric.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.customWidthNumeric.Enabled = false;
+            this.customWidthNumeric.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.customWidthNumeric.ForeColor = System.Drawing.Color.White;
+            this.customWidthNumeric.Location = new System.Drawing.Point(443, 440);
+            this.customWidthNumeric.Margin = new System.Windows.Forms.Padding(4);
+            this.customWidthNumeric.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.customWidthNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.customWidthNumeric.Name = "customWidthNumeric";
+            this.customWidthNumeric.Size = new System.Drawing.Size(87, 30);
+            this.customWidthNumeric.TabIndex = 36;
+            this.customWidthNumeric.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.customWidthNumeric.Value = new decimal(new int[] {
+            1920,
+            0,
+            0,
+            0});
+            // 
+            // saveAspectButton
+            // 
+            this.saveAspectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveAspectButton.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.saveAspectButton.Location = new System.Drawing.Point(4, 385);
+            this.saveAspectButton.Margin = new System.Windows.Forms.Padding(4);
+            this.saveAspectButton.MinimumSize = new System.Drawing.Size(63, 31);
+            this.saveAspectButton.Name = "saveAspectButton";
+            this.saveAspectButton.OffBackColor = System.Drawing.SystemColors.ControlDark;
+            this.saveAspectButton.OffToggleColor = System.Drawing.Color.Gainsboro;
+            this.saveAspectButton.OnBackColor = System.Drawing.Color.Crimson;
+            this.saveAspectButton.OnToggleColor = System.Drawing.Color.WhiteSmoke;
+            this.saveAspectButton.Size = new System.Drawing.Size(244, 31);
+            this.saveAspectButton.TabIndex = 39;
+            this.saveAspectButton.Text = "Save aspect ratio";
+            this.saveAspectButton.ToggleWidth = 50;
+            this.saveAspectButton.UseVisualStyleBackColor = true;
+            this.saveAspectButton.CheckedChanged += new System.EventHandler(this.saveAspectButton_CheckedChanged);
             // 
             // tipPanel
             // 
@@ -799,13 +878,14 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.tipPanel.Controls.Add(this.tipTextBox);
             this.tipPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tipPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.tipPanel.Location = new System.Drawing.Point(0, 507);
+            this.tipPanel.Location = new System.Drawing.Point(0, 718);
+            this.tipPanel.Margin = new System.Windows.Forms.Padding(4);
             this.tipPanel.Name = "tipPanel";
             this.tipPanel.OffsetXBottom = 25;
             this.tipPanel.OffsetXTop = 25;
             this.tipPanel.OffsetYBottom = 25;
             this.tipPanel.OffsetYTop = 25;
-            this.tipPanel.Size = new System.Drawing.Size(1050, 114);
+            this.tipPanel.Size = new System.Drawing.Size(1488, 161);
             this.tipPanel.TabIndex = 20;
             // 
             // tipTextBox
@@ -817,12 +897,12 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.tipTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tipTextBox.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.tipTextBox.ForeColor = System.Drawing.Color.White;
-            this.tipTextBox.Location = new System.Drawing.Point(39, 33);
-            this.tipTextBox.Margin = new System.Windows.Forms.Padding(15);
+            this.tipTextBox.Location = new System.Drawing.Point(55, 46);
+            this.tipTextBox.Margin = new System.Windows.Forms.Padding(21);
             this.tipTextBox.Multiline = true;
             this.tipTextBox.Name = "tipTextBox";
             this.tipTextBox.ReadOnly = true;
-            this.tipTextBox.Size = new System.Drawing.Size(972, 50);
+            this.tipTextBox.Size = new System.Drawing.Size(1377, 71);
             this.tipTextBox.TabIndex = 19;
             this.tipTextBox.Text = "При изменении только ширины/высоты второй параметр определяется в соответсвии с с" +
     "оотношением сторон входного файла\r\n\r\nНапример: входное видео 1280x720, заменим ш" +
@@ -830,13 +910,14 @@ namespace FFMPEG_Wrapper.UserControls.Output
             // 
             // OutputPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(136F, 136F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.Controls.Add(this.layoutPanel);
             this.Controls.Add(this.tipPanel);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "OutputPanel";
-            this.Size = new System.Drawing.Size(1050, 621);
+            this.Size = new System.Drawing.Size(1488, 879);
             this.layoutPanel.ResumeLayout(false);
             this.layoutPanel.PerformLayout();
             this.miscPanel.ResumeLayout(false);
@@ -847,9 +928,9 @@ namespace FFMPEG_Wrapper.UserControls.Output
             this.videoPanel.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.customWidthNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customHeightNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bitrateNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customHeightNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customWidthNumeric)).EndInit();
             this.tipPanel.ResumeLayout(false);
             this.tipPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -896,5 +977,7 @@ namespace FFMPEG_Wrapper.UserControls.Output
         private Forms.FormUtils.ToggleButton defaultSavePathBox;
         private System.Windows.Forms.Label savePathLabel;
         private RJButton startButton;
+        private RJButton concatButton;
+        private Forms.FormUtils.ToggleButton saveAspectButton;
     }
 }
